@@ -1083,40 +1083,6 @@ const INBOUND = {
   }
 };
 
-// ─── OBJECTION PLAYBOOK (from Notion: FFF + Anaconda Squeeze frameworks) ─────
-const PLAYBOOK = {
-  "Gone Dark": {
-    col: "#64748b",
-    fff: "I understand how that feels — radio silence is common after a tradeshow. Another brand felt the same way after Ambiente last year, and what they found was that one data point changed the conversation: showing X retailers searched for them on Faire in the last 30 days.",
-    anaconda: "Mirror: '...haven't had a chance to connect.' → Loaded Q: 'What would make this feel worth 15 minutes of your time right now?' → Why Now: 'The 30 days post-tradeshow are when retailer intent peaks — your booth is still fresh in their minds.'",
-    micro: "Ask for a single yes/no: 'Are you open to seeing the retailer demand data before you decide?'"
-  },
-  "Objection": {
-    col: "#f59e0b",
-    fff: "I hear you, and I've talked with many brands who felt the same way. What they ultimately found was that the specific concern — whether commission, bandwidth, or fit — usually had a straightforward answer once we dug into the details.",
-    anaconda: "Mirror: last few words with upward tone → Loaded Q: 'Can you help me understand what's causing the hesitation?' → Why Now: 'I want to make sure I fully understand — what would need to be true for this to make sense?'",
-    micro: "Isolate the objection: 'If we figured out how to solve for [X], what other concerns would we have to work through before moving forward?'"
-  },
-  "Bad Fit": {
-    col: "#ef4444",
-    fff: "I understand how you feel — fit is everything on Faire. I've worked with brands who felt the same, particularly around category, retailer type, or commission model. What they found was that once we clarified exactly which part felt off, most concerns had a direct answer.",
-    anaconda: "Mirror the concern → Loaded Q: 'What specifically feels like a fit issue — is it the category, the retailer profile, or something about the model?' → Why Now: Social proof from similar brand who overcame same concern.",
-    micro: "'Are you open to an idea? I've seen a brand very similar to yours make it work by doing X.'"
-  },
-  "Bad Timing": {
-    col: "#8b5cf6",
-    fff: "I understand timing is tough. I've talked with many brands who felt the same — especially at tradeshows when a lot is happening. What they found was that the 30 days post-tradeshow are actually the highest-intent window, and waiting past it means missing that spike.",
-    anaconda: "Mirror: 'Timing isn't right...' → Loaded Q: 'What would need to change for timing to feel right?' → Why Now: 'Retailer intent from Ambiente peaks in the next 4 weeks — this is the single best moment to capture it.'",
-    micro: "'Can I get your thoughts on one idea — even just 20 minutes to explore what it would look like?'"
-  },
-  "Other": {
-    col: "#94a3b8",
-    fff: "I understand, and I've talked with brands who had similar concerns. What they ultimately found was that the best next step was a quick call to surface the real question — not the surface-level one.",
-    anaconda: "Mirror → Open Q: 'Help me understand the main hesitation.' → Don't jump to solution mode. Use: 'What other concerns do you have?'",
-    micro: "'Are you open to a 20-minute call just to explore fit? No commitment.'"
-  }
-};
-
 // ─── EMAIL HISTORY (Salesforce Task — last 2 AE emails + last 2 brand replies) ──
 const EMAIL_HISTORY = {
   "0011M00002Ua8WXQAZ": {
@@ -2393,6 +2359,97 @@ const COMP_US = {
   ],
 };
 
+// ─── PRIMARY CONTACTS (from Salesforce SALESFORCE.CONTACT, ranked by role/title) ──
+// Each entry: cid=Salesforce contact ID, n=name, r=role/title
+const CONTACTS = {
+  "0011M00002VIrZjQAL": { cid: "0038X00003spITcQAM", n: "Jacob Lyngholm Mølhede", r: "CO-Owner" },
+  "0011M00002VIyqNQAT": { cid: "003Vt00000GSUIbIAP", n: "Josef Schmidt", r: "Managing Director" },
+  "0011M00002VIz9qQAD": { cid: "003Vt000012n0mnIAA", n: "Emma Stragier", r: "Marketing" },
+  "0011M00002VIzZ7QAL": { cid: "0033q00003vgeSNAAY", n: "Kim Ekelund", r: "CEO" },
+  "0011M00002VIzppQAD": { cid: "003Vt000010QCZiIAO", n: "Daniel Henriksen", r: "Sales and Marketing Director / Owner" },
+  "0011M00002VJ0IAQA1": { cid: "003Vt00000lZdcvIAC", n: "Ragna Qvick", r: "Global Retail Director" },
+  "0011M00002VJ0kuQAD": { cid: "003Vt00000qTTByIAO", n: "Alexander Egele", r: "Head of Sales" },
+  "0011M00002VJ1RaQAL": { cid: "0038X00003Y8mHvQAJ", n: "Anna Carpena", r: "" },
+  "0011M00002VJ2TMQA1": { cid: "003Vt00000UMZPKIA5", n: "Eduardo Bolan Borges, MBA", r: "International Sales Manager" },
+  "0011M00002VJ31QQAT": { cid: "003Vt00000oxfFFIAY", n: "Paul Knudsen", r: "Sales- and marketing director" },
+  "0011M00002VJ3fmQAD": { cid: "0038X00003sowE0QAI", n: "Jessica Warke", r: "Sales Manager" },
+  "0011M00002VJ47yQAD": { cid: "003Vt000017gpxfIAA", n: "Lutz Weber", r: "Leiter Verkauf International" },
+  "0011M00002VJPsnQAH": { cid: "0038X00003fZZRxQAO", n: "Franco Patruno", r: "Export Manager" },
+  "0011M00002VJQ65QAH": { cid: "0031M000039msWwQAI", n: "Sachin Bagga", r: "" },
+  "0011M00002VJw6CQAT": { cid: "0038X00003rVwL6QAK", n: "Sebastian Gutberlet", r: "Managing Director" },
+  "0011M00002VK0P2QAL": { cid: "003Vt00000ZZckcIAD", n: "peggy sadier", r: "Directrice marketing Ecommerce et New Business | France & Global" },
+  "0011M00002VKBkjQAH": { cid: "003Vt000010RDALIA4", n: "Eddy N'Gabula", r: "E-commerce Manager La Brigade de Buyer" },
+  "0011M00002VKDibQAH": { cid: "0038X00003ZD7uwQAD", n: "Richard Sparrenhök", r: "Owner" },
+  "0011M00002Vb3GFQAZ": { cid: "0033q00003pGwnuAAC", n: "Joe Sullivan", r: "" },
+  "0011M00002Vb5J8QAJ": { cid: "003Vt00001IVBIrIAP", n: "Veronique Kessels", r: "Key Account Manager" },
+  "0011M00002VbHO6QAN": { cid: "003Vt00000YHxo5IAD", n: "Gretchen Godfrey", r: "Vice President of Marketing, Merchandising & Strategic Sourcing" },
+  "0011M00002VbHa4QAF": { cid: "0031M000039nsZTQAY", n: "Jurgen Pelsmaeker", r: "" },
+  "0011M00002VbMfwQAF": { cid: "0038X00003yu4XpQAI", n: "Miguel Couso", r: "Sales Manager" },
+  "0011M00002VbMxKQAV": { cid: "003Vt00000srC47IAE", n: "Henry Holdsworth", r: "Owner" },
+  "0011M00002VbO7SQAV": { cid: "003Vt00000O8dhVIAR", n: "Alan Pimm", r: "MD" },
+  "0011M00002VbOa3QAF": { cid: "003Vt00001CwnTxIAJ", n: "Jörg Mumbeck", r: "Head of Sales" },
+  "0011M00002VbP8fQAF": { cid: "003Vt00000F1o6zIAB", n: "Peter Smith", r: "" },
+  "0011M00002VbPOnQAN": { cid: "003Vt000016C2lGIAS", n: "Victoria Curran", r: "" },
+  "0011M00002VbTKHQA3": { cid: "003Vt00000yX5ETIA0", n: "Lynn Goodenough", r: "Key Account Manager" },
+  "0011M00002VbWDlQAN": { cid: "003Vt00000fD9kDIAS", n: "Christian Amthor", r: "CEO" },
+  "0011M00002VbYHBQA3": { cid: "003Vt00000UMMS4IAP", n: "Enrico Cencetti", r: "Responsabile pubbliche relazioni e comunicazioni marketing" },
+  "0011M00002Vc4teQAB": { cid: "0033q00003pIeCFAA0", n: "Christie Brown", r: "" },
+  "0011M00002Vc5aYQAR": { cid: "0033q00003wYIUDAA4", n: "Svetlana Gelman", r: "" },
+  "0011M00002Vc8lMQAR": { cid: "0038X00003qrAaUQAU", n: "Rémy Francisco", r: "Owner" },
+  "0011M00002VdUZiQAN": { cid: "0038X00003og2htQAA", n: "Ana Figueiredo Delgado", r: "" },
+  "0013q00002FT4OkAAL": { cid: "0033q00003vjAbOAAU", n: "Nádia Rodrigues", r: "Plant Manager" },
+  "0013q00002HUiyfAAD": { cid: "0033q00003pH1d0AAC", n: "Jörg Mulavecz", r: "" },
+  "0013q00002HV98yAAD": { cid: "003Vt00000yX8ttIAC", n: "Laetitia Dardillac", r: "International Sales Director" },
+  "0013q00002HVerAAAT": { cid: "0033q00003pHjboAAC", n: "Belen Hevia", r: "" },
+  "0013q00002HwGJ9AAN": { cid: "003Vt00000qTLRKIA4", n: "Henryk Schaeperkoetter", r: "Vertriebsleiter" },
+  "0013q00002HwOluAAF": { cid: "003Vt000018fyPhIAI", n: "Lara Tittensor", r: "" },
+  "0013q00002HwZUHAA3": { cid: "003Vt000001dLiLIAU", n: "patrick Desmidt", r: "" },
+  "0013q00002HwqL6AAJ": { cid: "003Vt00000AEe9VIAT", n: "Silvia Belluomini", r: "" },
+  "0013q00002HxP5WAAV": { cid: "0033q00003pIt7HAAS", n: "Alexander Berk", r: "" },
+  "0013q00002HxQ4nAAF": { cid: "0033q00003pIay0AAC", n: "Alberto Bartolucci", r: "" },
+  "0013q00002HxQavAAF": { cid: "003Vt00000UMZPIIA5", n: "Duarte Gomes", r: "Account Manager Key Account" },
+  "0013q00002HxRVdAAN": { cid: "003Vt00001EolOAIAZ", n: "Gina Kooijman", r: "Logistics Employee" },
+  "0013q00002HxXKDAA3": { cid: "003Vt00000UMITGIA5", n: "Jarno van der Donk", r: "Co-Founder" },
+  "0013q00002Hxf4ZAAR": { cid: "0033q00003sVcq5AAC", n: "Rinlpas Sirathanantchai", r: "" },
+  "0013q00002HxjMQAAZ": { cid: "0033q00003sWFSyAAO", n: "Fredrik Dvinge", r: "" },
+  "0013q00002Hy4MGAAZ": { cid: "0031M000039mt5aQAA", n: "Emmanuel Brugger", r: "C.E.O." },
+  "0013q00002HyXJwAAN": { cid: "0033q00003viKlmAAE", n: "Heidi Gray", r: "Owner" },
+  "0013q00002Hz2fQAAR": { cid: "003Vt00001BAEXWIA5", n: "Elena García", r: "" },
+  "0013q00002HzCRXAA3": { cid: "003Vt000017ghIXIAY", n: "Noelia Diaz", r: "international sales manager" },
+  "0013q00002HzEB2AAN": { cid: "0038X00003fZbzxQAC", n: "Gideon Van der Dussen", r: "Owner" },
+  "0013q00002HzG2QAAV": { cid: "003Vt00000gIzjCIAS", n: "Ralf Isbert", r: "Vertriebsleitung" },
+  "0013q00002HzayVAAR": { cid: "0038X00003qrAlXQAU", n: "Emmanuel Vaganay", r: "Sales Director" },
+  "0013q00002J0ulxAAB": { cid: "0033q00003vjHiMAAU", n: "Juan Miguel Botella", r: "" },
+  "0013q00002J3lKdAAJ": { cid: "0033q00003vge78AAA", n: "Hylke Maas", r: "CEO" },
+  "0013q00002J3mcIAAR": { cid: "0031M00003AZvi2QAD", n: "Peter Bodum", r: "" },
+  "0013q00002J40I0AAJ": { cid: "0038X00003sowMaQAI", n: "Rabea Linkert", r: "Key-Account Managerin Amazon & Marketplaces" },
+  "0013q00002K23aaAAB": { cid: "003Vt00000UMQKOIA5", n: "Xevi Batlle", r: "Sales Manager" },
+  "0013q00002K2C2PAAV": { cid: "0038X00003wFVfoQAG", n: "Mandy de Cocq", r: "" },
+  "0013q00002K2V6FAAV": { cid: "0033q00003waFnfAAE", n: "Panos Argyros", r: "Chief Executive Officer" },
+  "0013q00002K3BXvAAN": { cid: "0038X00003YIcmBQAT", n: "Sára Kopalová", r: "Senior Account Manager" },
+  "0013q00002K3g6aAAB": { cid: "0033q00003waZCtAAM", n: "Polona Pacnik", r: "Owner" },
+  "0013q00002K47rlAAB": { cid: "003Vt0000028zbRIAQ", n: "Rafael Arques", r: "Director Comercial" },
+  "0013q00002K523TAAR": { cid: "003Vt00000iv2VJIAY", n: "Cristal Luo", r: "" },
+  "0018X00002yPh2uQAC": { cid: "0038X00003ZD8UPQA1", n: "Pauline D'Haenens", r: "Founder" },
+  "0018X00002yQ20hQAC": { cid: "003Vt00000hhhH5IAI", n: "Joshua Allen", r: "" },
+  "0018X000030KEmhQAG": { cid: "0038X00003vVwOtQAK", n: "Ariadna Pedrosa", r: "" },
+  "0018X000030LBXaQAO": { cid: "0033q00003wahUdAAI", n: "Vicky Callewaert", r: "" },
+  "0018X00003Bi3kyQAB": { cid: "003Vt00001EpcXKIAZ", n: "Oscar Krysik", r: "Partnerships & Marketing Manager" },
+  "0018X00003BiRHIQA3": { cid: "003Vt000013LJobIAG", n: "Rui Batel", r: "" },
+  "0018X00003FGQZNQA5": { cid: "0038X00003plAWMQA2", n: "Leen Leijskens", r: "" },
+  "0018X00003Gb7FDQAZ": { cid: "003Vt00000bblkDIAQ", n: "Karin Renting", r: "Product Owner E-Commerce" },
+  "0018X00003Oisj7QAB": { cid: "0038X00003ytzIqQAI", n: "Darlene Andrade", r: "Sales Manager" },
+  "001Vt0000094VjCIAU": { cid: "003Vt000009jHfWIAU", n: "Natalia Chmiest", r: "" },
+  "001Vt00000TqrUAIAZ": { cid: "003Vt0000189zK6IAI", n: "John Prest", r: "" },
+  "001Vt00000TtuP9IAJ": { cid: "003Vt000018g4i7IAA", n: "Nuno Marques", r: "" },
+  "001Vt00000TuAGvIAN": { cid: "0033q00003vhTP3AAM", n: "Helene Ellingsoe", r: "" },
+  "001Vt00000TuElyIAF": { cid: "003Vt00001JUP2LIAX", n: "Lukas Roos", r: "E-Commerce-Manager" },
+  "001Vt00000U070FIAR": { cid: "003Vt000017xDpXIAU", n: "Ray Mehra", r: "CEO" },
+  "001Vt00000U3FyvIAF": { cid: "003Vt00000xqGwLIAU", n: "María Pérez Falomir", r: "Marketing" },
+  "001Vt00000f9uHxIAI": { cid: "003Vt0000125D30IAE", n: "Francesco Colombo", r: "Commercial & Digital Strategy" },
+  "001Vt00001CWcKXIA1": { cid: "003Vt000018KNbGIAW", n: "Nicholas Buttle", r: "Catering Sales Manager" },
+};
+
 // ─── 111 ACCOUNTS (Salesforce + Excel booth) ──────────────────────────────────
 const ACCOUNTS = [
 // ANNA DRZENIEK (23),
@@ -2407,7 +2464,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "Marquee",
-  lost: null,
   booth: "9.0, C43"
 }, {
   id: "0011M00002Vb5J8QAJ",
@@ -2420,7 +2476,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VJ0kuQAD",
@@ -2433,7 +2488,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Austria",
   bob: "Marquee",
-  lost: null,
   booth: "3.1, E51"
 }, {
   id: "0011M00002VKBkjQAH",
@@ -2446,7 +2500,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: "Marquee",
-  lost: null,
   booth: "8.0, H89"
 }, {
   id: "0013q00002HwGJ9AAN",
@@ -2459,7 +2512,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "P3",
-  lost: null,
   booth: "9.0, B55"
 }, {
   id: "001Vt0000094VjCIAU",
@@ -2472,7 +2524,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Poland",
   bob: "P1",
-  lost: null,
   booth: "9.1, A44"
 }, {
   id: "0013q00002Hxf4ZAAR",
@@ -2485,7 +2536,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "P3",
-  lost: null,
   booth: "12.1, A20"
 }, {
   id: "0011M00002VIyqNQAT",
@@ -2498,7 +2548,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "P2",
-  lost: null,
   booth: "4.2, E70"
 }, {
   id: "0013q00002HxXKDAA3",
@@ -2511,7 +2560,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HzCRXAA3",
@@ -2524,7 +2572,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "Marquee",
-  lost: null,
   booth: "8.0, E30"
 }, {
   id: "0013q00002HzG2QAAV",
@@ -2537,7 +2584,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "P2",
-  lost: null,
   booth: "3.0, D80"
 }, {
   id: "0011M00002VbOa3QAF",
@@ -2550,7 +2596,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "P2",
-  lost: null,
   booth: "3.0, F83"
 }, {
   id: "0011M00002VJw6CQAT",
@@ -2563,7 +2608,6 @@ const ACCOUNTS = [
   cat: "Paper & Novelty",
   country: "Germany",
   bob: "Marquee",
-  lost: null,
   booth: "4.2, E30"
 }, {
   id: "0011M00002VJ47yQAD",
@@ -2576,7 +2620,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Switzerland",
   bob: "Marquee",
-  lost: null,
   booth: "8.0, J10"
 }, {
   id: "0018X00003Bi3kyQAB",
@@ -2589,7 +2632,6 @@ const ACCOUNTS = [
   cat: "Women's Apparel",
   country: "Poland",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0018X00003Gb7FDQAZ",
@@ -2602,7 +2644,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VbHa4QAF",
@@ -2615,7 +2656,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002K3g6aAAB",
@@ -2628,7 +2668,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Slovenia",
   bob: "P1",
-  lost: null,
   booth: "4.2, J54"
 }, {
   id: "0013q00002HzEB2AAN",
@@ -2641,7 +2680,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HUiyfAAD",
@@ -2654,7 +2692,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "P2",
-  lost: null,
   booth: "8.0, C40"
 }, {
   id: "0013q00002HxRVdAAN",
@@ -2667,7 +2704,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "001Vt00000TuElyIAF",
@@ -2680,7 +2716,6 @@ const ACCOUNTS = [
   cat: "Paper & Novelty",
   country: "Germany",
   bob: "P2",
-  lost: null,
   booth: "9.2, D04"
 }, {
   id: "0011M00002VbWDlQAN",
@@ -2693,7 +2728,6 @@ const ACCOUNTS = [
   cat: "Women's Apparel",
   country: "Germany",
   bob: "P3",
-  lost: "Objection",
   booth: "3.0, B30"
 },,
 // BRUNO SOUSA (16),
@@ -2708,7 +2742,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P3",
-  lost: "Gone Dark",
   booth: ""
 }, {
   id: "0013q00002FT4OkAAL",
@@ -2721,7 +2754,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Portugal",
   bob: "P3",
-  lost: "Gone Dark",
   booth: "12.1, C04"
 }, {
   id: "001Vt00001FEZrBIAX",
@@ -2734,7 +2766,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Portugal",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HxQavAAF",
@@ -2747,7 +2778,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Portugal",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "001Vt00001CWcKXIA1",
@@ -2760,7 +2790,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "001Vt00000TqrUAIAZ",
@@ -2773,7 +2802,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P3",
-  lost: null,
   booth: "9.1, D45"
 }, {
   id: "0018X00003BiRHIQA3",
@@ -2786,7 +2814,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Portugal",
   bob: "P3",
-  lost: null,
   booth: "12.1, E22"
 }, {
   id: "0011M00002VJQ65QAH",
@@ -2799,7 +2826,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VbHO6QAN",
@@ -2812,7 +2838,6 @@ const ACCOUNTS = [
   cat: "Women's Accessories",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HwOluAAF",
@@ -2825,7 +2850,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P3",
-  lost: "Gone Dark",
   booth: "12.0, E64"
 }, {
   id: "001Vt00000U070FIAR",
@@ -2838,7 +2862,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P3",
-  lost: null,
   booth: "9.3, C31"
 }, {
   id: "001Vt00000TtuP9IAJ",
@@ -2851,7 +2874,6 @@ const ACCOUNTS = [
   cat: "Men's Apparel",
   country: "Portugal",
   bob: "P3",
-  lost: null,
   booth: "4.2, M75"
 }, {
   id: "0018X00003Oisj7QAB",
@@ -2864,7 +2886,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Portugal",
   bob: "P3",
-  lost: "Bad Fit",
   booth: "12.0, C59"
 }, {
   id: "0011M00002VJ2TMQA1",
@@ -2877,7 +2898,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VdUZiQAN",
@@ -2890,7 +2910,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Portugal",
   bob: "Marquee",
-  lost: null,
   booth: "4 Stände"
 },,
 // DANIEL ROUCO (14),
@@ -2905,7 +2924,6 @@ const ACCOUNTS = [
   cat: "Jewelry",
   country: "Spain",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HxjRkAAJ",
@@ -2918,7 +2936,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P3",
-  lost: null,
   booth: "12.0, E27"
 }, {
   id: "0013q00002K23aaAAB",
@@ -2931,7 +2948,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P2",
-  lost: null,
   booth: ""
 }, {
   id: "001Vt00000U3likIAB",
@@ -2944,7 +2960,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P1",
-  lost: null,
   booth: "3.1, J65"
 }, {
   id: "0013q00002Hz2fQAAR",
@@ -2957,7 +2972,6 @@ const ACCOUNTS = [
   cat: "Women's Accessories",
   country: "Spain",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HVerAAAT",
@@ -2970,7 +2984,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "Marquee",
-  lost: "Objection",
   booth: ""
 }, {
   id: "001Vt00000TvYQuIAN",
@@ -2983,7 +2996,6 @@ const ACCOUNTS = [
   cat: "Men's Apparel",
   country: "Spain",
   bob: "P3",
-  lost: null,
   booth: "9.2, D20"
 }, {
   id: "001Vt00000TvrztIAB",
@@ -2996,7 +3008,6 @@ const ACCOUNTS = [
   cat: "Paper & Novelty",
   country: "Spain",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "001Vt00000U3FyvIAF",
@@ -3009,7 +3020,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002K47rlAAB",
@@ -3022,7 +3032,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0018X000030KEmhQAG",
@@ -3035,7 +3044,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P2",
-  lost: null,
   booth: "11.0, B49"
 }, {
   id: "001Vt00000TzqAhIAJ",
@@ -3048,7 +3056,6 @@ const ACCOUNTS = [
   cat: "Food & Drink",
   country: "Spain",
   bob: "P3",
-  lost: null,
   booth: "9.2, F69"
 }, {
   id: "0011M00002VJ1RaQAL",
@@ -3061,7 +3068,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002J0ulxAAB",
@@ -3074,7 +3080,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P3",
-  lost: null,
   booth: ""
 },,
 // DANILO ESPOSITO (13),
@@ -3089,7 +3094,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "001Vt00000f9uHxIAI",
@@ -3102,7 +3106,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Italy",
   bob: "P2",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HwqL6AAJ",
@@ -3115,7 +3118,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Italy",
   bob: "P2",
-  lost: null,
   booth: "9.1, E07"
 }, {
   id: "0011M00002VbMrfQAF",
@@ -3128,7 +3130,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P2",
-  lost: "Bad Fit",
   booth: ""
 }, {
   id: "0013q00002HxQ4nAAF",
@@ -3141,7 +3142,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Italy",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VbP8fQAF",
@@ -3154,7 +3154,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "001Vt00000EoRzSIAV",
@@ -3167,7 +3166,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Italy",
   bob: "P1",
-  lost: null,
   booth: "9.3, A03"
 }, {
   id: "0011M00002Vb3GFQAZ",
@@ -3180,7 +3178,6 @@ const ACCOUNTS = [
   cat: "Women's Apparel",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VbFSSQA3",
@@ -3193,7 +3190,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Italy",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002K2V6FAAV",
@@ -3206,7 +3202,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Greece",
   bob: "P2",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002K50tDAAR",
@@ -3219,7 +3214,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Poland",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VbYHBQA3",
@@ -3232,7 +3226,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Italy",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VJPsnQAH",
@@ -3245,7 +3238,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Italy",
   bob: "Marquee",
-  lost: null,
   booth: ""
 },,
 // JUAN CEBALLOS DORADO (5),
@@ -3260,7 +3252,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: null,
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002K523TAAR",
@@ -3273,7 +3264,6 @@ const ACCOUNTS = [
   cat: "Women's Apparel",
   country: "United Kingdom",
   bob: null,
-  lost: "Objection",
   booth: ""
 }, {
   id: "0018X000036wVNKQA2",
@@ -3286,7 +3276,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002HyXJwAAN",
@@ -3299,7 +3288,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "P3",
-  lost: "Objection",
   booth: "2 Stände"
 }, {
   id: "0011M00002VbN39QAF",
@@ -3312,7 +3300,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Spain",
   bob: "P2",
-  lost: null,
   booth: ""
 },,
 // KIMBERLEY BENSIMHON (4),
@@ -3327,7 +3314,6 @@ const ACCOUNTS = [
   cat: "Beauty & Wellness",
   country: "Germany",
   bob: "Marquee",
-  lost: "Objection",
   booth: "4.2, M49"
 }, {
   id: "0011M00002VK0P2QAL",
@@ -3340,7 +3326,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: "Marquee",
-  lost: "Gone Dark",
   booth: ""
 }, {
   id: "0011M00002VKDibQAH",
@@ -3353,7 +3338,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Sweden",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002Vc5aYQAR",
@@ -3366,7 +3350,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Germany",
   bob: "Marquee",
-  lost: null,
   booth: ""
 },,
 // LARS OOSTENBACH (7),
@@ -3381,7 +3364,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Denmark",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VIrZjQAL",
@@ -3394,7 +3376,6 @@ const ACCOUNTS = [
   cat: "Kids & Baby - Non-Apparel",
   country: "Denmark",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002K2C2PAAV",
@@ -3407,7 +3388,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: "Marquee",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VIzZ7QAL",
@@ -3420,7 +3400,6 @@ const ACCOUNTS = [
   cat: "Kids & Baby - Non-Apparel",
   country: "Sweden",
   bob: "P3",
-  lost: null,
   booth: ""
 }, {
   id: "0011M00002VIzppQAD",
@@ -3433,7 +3412,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Denmark",
   bob: "P1",
-  lost: null,
   booth: ""
 }, {
   id: "0013q00002J3lKdAAJ",
@@ -3446,7 +3424,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Netherlands",
   bob: null,
-  lost: "Bad Fit",
   booth: "4.2, M38"
 }, {
   id: "001Vt00000TuAGvIAN",
@@ -3459,7 +3436,6 @@ const ACCOUNTS = [
   cat: "Food & Drink",
   country: "Denmark",
   bob: "Marquee",
-  lost: "Gone Dark",
   booth: ""
 },
 // RICHARD HAYMAN (9),
@@ -3474,7 +3450,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: "9.0, B05"
 },
 {
@@ -3488,7 +3463,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Denmark",
   bob: "Marquee",
-  lost: null,
   booth: "3.1, H60"
 },
 {
@@ -3502,7 +3476,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: ""
 },
 {
@@ -3516,7 +3489,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Denmark",
   bob: "Marquee",
-  lost: null,
   booth: "3.0, B10"
 },
 {
@@ -3530,7 +3502,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: "4.2, K60E"
 },
 {
@@ -3544,7 +3515,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: "9.0, B35"
 },
 {
@@ -3558,7 +3528,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: ""
 },
 {
@@ -3572,7 +3541,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: "3.1, G66"
 },
 {
@@ -3586,7 +3554,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "United Kingdom",
   bob: "Marquee",
-  lost: null,
   booth: "3.0, F49"
 },
 // YASMINE HAKIM (11),
@@ -3601,7 +3568,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Belgium",
   bob: "P1",
-  lost: null,
   booth: "9.1, E03"
 },
 {
@@ -3615,7 +3581,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Belgium",
   bob: "P1",
-  lost: null,
   booth: "3.1, D81"
 },
 {
@@ -3629,7 +3594,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: "Marquee",
-  lost: null,
   booth: "3.0, B89"
 },
 {
@@ -3643,7 +3607,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: "Marquee",
-  lost: null,
   booth: ""
 },
 {
@@ -3657,7 +3620,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: "Marquee",
-  lost: null,
   booth: "8.0, J89"
 },
 {
@@ -3671,7 +3633,6 @@ const ACCOUNTS = [
   cat: "Kids & Baby - Non-Apparel",
   country: "Belgium",
   bob: "P1",
-  lost: null,
   booth: "10.1, E59"
 },
 {
@@ -3685,7 +3646,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: "Marquee",
-  lost: null,
   booth: "8.0, E76"
 },
 {
@@ -3699,7 +3659,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: null,
-  lost: null,
   booth: ""
 },
 {
@@ -3713,7 +3672,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: null,
-  lost: null,
   booth: "5 Stände"
 },
 {
@@ -3727,7 +3685,6 @@ const ACCOUNTS = [
   cat: "Beauty & Wellness",
   country: "France",
   bob: "Marquee",
-  lost: null,
   booth: "3.0, A90"
 },
 {
@@ -3741,7 +3698,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "France",
   bob: null,
-  lost: null,
   booth: "9.1, F34"
 },
 {
@@ -3755,7 +3711,6 @@ const ACCOUNTS = [
   cat: "Paper & Novelty",
   country: "Belgium",
   bob: null,
-  lost: null,
   booth: "4.2, F41"
 },
 // PIERRE-ANTOINE MERCIER-HANDISYDE (5),
@@ -3770,7 +3725,6 @@ const ACCOUNTS = [
   cat: "Beauty & Wellness",
   country: "Belgium",
   bob: "P2",
-  lost: null,
   booth: "3.1, J57"
 },
 {
@@ -3784,7 +3738,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Belgium",
   bob: "P3",
-  lost: null,
   booth: "3.0, D60"
 },
 {
@@ -3798,7 +3751,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Belgium",
   bob: "P3",
-  lost: null,
   booth: "3.1, D30"
 },
 {
@@ -3812,7 +3764,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Belgium",
   bob: "P3",
-  lost: null,
   booth: "3.0, C60"
 },
 {
@@ -3826,7 +3777,6 @@ const ACCOUNTS = [
   cat: "Home Decor",
   country: "Belgium",
   bob: "P3",
-  lost: null,
   booth: "3.1, H92"
 }
 ];
@@ -3896,7 +3846,6 @@ function AccountCard({
     _picked.push(c); _seen.add(c.t); _usAdded++;
   }
   const comps = _picked.slice(0, 8);
-  const pb = a.lost ? PLAYBOOK[a.lost] || PLAYBOOK["Other"] : null;
   const lc = lastContactInfo(s.lc);
   const sfdcURL = "https://indigofairorg.lightning.force.com/lightning/r/Account/" + a.id + "/view";
   const faireURL = a.token ? "https://faire.com/brand/" + a.token : null;
@@ -3942,11 +3891,10 @@ function AccountCard({
   const genEmail = () => {
     const lang = a.country === "Portugal" ? "Portuguese" : a.country === "Germany" ? "German" : a.country === "France" ? "French" : a.country === "Spain" ? "Spanish" : a.country === "Italy" ? "Italian" : a.country === "Netherlands" ? "Dutch" : "English";
     const compList = comps.map(c => c.n).join(", ") || "similar brands on Faire";
-    const lostCtx = a.lost ? "Previous objection/lost reason: " + a.lost + "\n" : "";
     const meetingCtx = (notes || transcript) ? "Meeting notes: " + (notes || transcript) : "We had a good conversation at Ambiente 2026.";
 
     const catchUpPrompt = "Write a short, warm follow-up email from " + a.owner + " at Faire to the contact at " + a.n + " (" + a.country + ", " + a.cat + ") after meeting at Ambiente 2026.\n\n" +
-      lostCtx + meetingCtx + "\nLanguage: " + lang + "\n\n" +
+      meetingCtx + "\nLanguage: " + lang + "\n\n" +
       "INSTRUCTIONS:\n" +
       "Write in " + lang + ". Keep it short and conversational. Sound like a real person. No dashes to start lines. No bullet points. Maximum 4 short paragraphs.\n\n" +
       "STRUCTURE:\n" +
@@ -4161,14 +4109,7 @@ function AccountCard({
       color: lc.color,
       fontWeight: 500
     }
-  }, "\uD83D\uDD50 ", lc.text), a.lost && /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontFamily: F,
-      fontSize: 11,
-      fontWeight: 600,
-      color: C.red
-    }
-  }, "\u26A0 ", a.lost))), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDD50 ", lc.text))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: 6,
@@ -4265,7 +4206,7 @@ function AccountCard({
       border: "1px solid " + C.border,
       marginBottom: 14
     }
-  }, [["Status", a.status], ["Country", a.country], ["Category", a.cat], ["BoB", a.bob], ["Pred. GMV", gmvLabel(a.gmv)], ["Last Contact", s.lc ? lc.text : null], ["Website", s.w], ["eCommerce", s.sys], ["Integration", s.int], ["Lost Reason", a.lost], ["Lost Type", s.lt], ["Lost Detail", s.ld]].filter(([, v]) => v).map(([k, v]) => /*#__PURE__*/React.createElement("div", {
+  }, [["Status", a.status], ["Country", a.country], ["Category", a.cat], ["BoB", a.bob], ["Pred. GMV", gmvLabel(a.gmv)], ["Last Contact", s.lc ? lc.text : null], ["Website", s.w], ["eCommerce", s.sys], ["Integration", s.int]].filter(([, v]) => v).map(([k, v]) => /*#__PURE__*/React.createElement("div", {
     key: k,
     style: {
       display: "flex",
@@ -4438,7 +4379,53 @@ function AccountCard({
       color: C.text2,
       opacity: loading === "desc" ? 0.5 : 1
     }
-  }, loading === "desc" ? "Generating…" : "✨ Generate brand description")), comps.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, loading === "desc" ? "Generating…" : "✨ Generate brand description")), CONTACTS[a.id] && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 14,
+      padding: "10px 14px",
+      borderRadius: 8,
+      border: "1px solid " + C.border,
+      background: C.muted
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: F,
+      fontSize: 10,
+      fontWeight: 700,
+      color: C.text3,
+      textTransform: "uppercase",
+      letterSpacing: "0.08em",
+      marginBottom: 6
+    }
+  }, "👤 Primary Contact"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: F,
+      fontSize: 13,
+      color: C.text1,
+      fontWeight: 600,
+      marginBottom: 2
+    }
+  }, CONTACTS[a.id].n), CONTACTS[a.id].r && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: F,
+      fontSize: 12,
+      color: C.text2,
+      marginBottom: 6
+    }
+  }, CONTACTS[a.id].r), /*#__PURE__*/React.createElement("a", {
+    href: "https://indigofairorg.lightning.force.com/lightning/r/Contact/" + CONTACTS[a.id].cid + "/view",
+    target: "_blank",
+    rel: "noreferrer",
+    style: {
+      fontFamily: F,
+      fontSize: 11,
+      color: C.green,
+      textDecoration: "none",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 4
+    }
+  }, "📧 Email in Salesforce ↗")), comps.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: 14
     }
@@ -4495,60 +4482,7 @@ function AccountCard({
       color: "#92400e",
       letterSpacing: "0.04em"
     }
-  }, "US"))))), pb && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: 14,
-      borderRadius: 8,
-      overflow: "hidden",
-      border: "1px solid " + C.border
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "8px 14px",
-      background: C.muted,
-      display: "flex",
-      alignItems: "center",
-      gap: 8
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontFamily: F,
-      fontSize: 10,
-      fontWeight: 700,
-      color: pb.col,
-      textTransform: "uppercase",
-      letterSpacing: "0.08em"
-    }
-  }, "\uD83D\uDCA1 ", a.lost, " Playbook")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "12px 14px"
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: "0 0 8px",
-      fontFamily: F,
-      fontSize: 12,
-      color: C.text2,
-      lineHeight: 1.7
-    }
-  }, /*#__PURE__*/React.createElement("strong", null, "FFF:"), " ", pb.fff), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: "0 0 8px",
-      fontFamily: F,
-      fontSize: 12,
-      color: C.text2,
-      lineHeight: 1.7
-    }
-  }, /*#__PURE__*/React.createElement("strong", null, "Anaconda:"), " ", pb.anaconda), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: 0,
-      fontFamily: F,
-      fontSize: 12,
-      color: C.text3,
-      lineHeight: 1.7,
-      fontStyle: "italic"
-    }
-  }, pb.micro))), /*#__PURE__*/React.createElement("div", {
+  }, "US"))))), /*#__PURE__*/React.createElement("div", {
     style: {
       borderTop: "1px solid " + C.border,
       paddingTop: 14
