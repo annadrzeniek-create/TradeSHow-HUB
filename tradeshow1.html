@@ -1396,109 +1396,1001 @@ const EMAIL_HISTORY = {
     }]
   }
 };
-// ─── COMPETITORS BY CATEGORY (from Snowflake ANALYTICS.SALESFORCE.ACCOUNT) ──
-const COMPETITORS = {
-  "Beauty & Wellness": [{
-    n: "Ancient Wisdom",
-    t: "b_ynbum8gbeh",
-    g: "€2.3M"
-  }, {
-    n: "The English Soap Co.",
-    t: "b_abb4dfd3eo",
-    g: "€465k"
-  }, {
-    n: "Croll & Denecke",
-    t: "b_sunfnrnvzm",
-    g: "€427k"
-  }, {
-    n: "Panier Des Sens",
-    t: "b_tget9hw9yu",
-    g: "€339k"
-  }, {
-    n: "Mad Beauty",
-    t: "b_m5wv6bfjh7",
-    g: "€479k"
-  }],
-  "Home Decor": [{
-    n: "blomus",
-    t: "b_3r31rqkj",
-    g: "€2.2M"
-  }, {
-    n: "Peugeot",
-    t: "b_6ncxqdexng",
-    g: "€1.9M"
-  }, {
-    n: "WIDDOP and Co.",
-    t: "b_ddmqafqn77",
-    g: "€1.1M"
-  }, {
-    n: "Gry and Sif",
-    t: "b_4zqdnrdhbk",
-    g: "€1.2M"
-  }, {
-    n: "Soruka Barcelona",
-    t: "b_6x70gzqaf5",
-    g: "€824k"
-  }],
-  "Paper & Novelty": [{
-    n: "Paperblanks",
-    t: "b_6ybhhl39sd",
-    g: "€2.2M"
-  }, {
-    n: "Sass and Belle",
-    t: "b_x45skyq96n",
-    g: "€1.1M"
-  }, {
-    n: "LOQI LLC",
-    t: "b_6wt7uvtqpl",
-    g: "€1.1M"
-  }],
-  "Food & Drink": [{
-    n: "Out of the blue KG",
-    t: "b_bqm1j6j8aa",
-    g: "€1.0M"
-  }, {
-    n: "Greenomic Delicatessen",
-    t: "b_5vgp5gsxgp",
-    g: "€232k"
-  }],
-  "Women's Accessories": [{
-    n: "Soruka Barcelona",
-    t: "b_6x70gzqaf5",
-    g: "€824k"
-  }, {
-    n: "IF",
-    t: "b_9zgknbigng",
-    g: "€1.1M"
-  }],
-  "Women's Apparel": [{
-    n: "Many Mornings",
-    t: "b_942epndq2p",
-    g: "€221k"
-  }, {
-    n: "Tranquillo",
-    t: "b_dfs1v86zkk",
-    g: "€1.5M"
-  }],
-  "Jewelry": [{
-    n: "Trovelore",
-    t: "b_egsam4eqqb",
-    g: "€2.2M"
-  }],
-  "Kids & Baby - Non-Apparel": [{
-    n: "BYKLIPKLAP",
-    t: "b_ezmietm59a",
-    g: "—"
-  }, {
-    n: "Ekelund Weavers",
-    t: "b_8qlwszh7jj",
-    g: "—"
-  }],
-  "Men's Apparel": [{
-    n: "MEIA MANIA",
-    t: "b_jauy5hwmg8",
-    g: "€38k"
-  }]
+// ─── COMPETITORS — three-pool architecture (live from Snowflake CANONICAL.BRANDS) ──
+// COMP_COUNTRY[category][country] = same-country competitors (≥50% of card)
+// COMP_EU[category]               = top EU brands (different country fill)
+// COMP_US[category]               = max 2 US brands with strong EU appeal
+// Each entry: n=name, t=token, g=GMV(L12M), country, markets="EU"|"US"|"Both", w=website domain
+
+const COMP_COUNTRY = {
+  "Beauty & Wellness": {
+    "Denmark": [
+      { n: "Moonchild Yoga Wear", t: "b_9fctpwh9m0", g: "€128k", country: "Denmark", markets: "Both", w: "moonchildyogawear.com" },
+      { n: "Yuaia Haircare", t: "b_em6jmgca58", g: "€78k", country: "Denmark", markets: "EU", w: "yummihaircare.dk" },
+      { n: "LastObject", t: "b_dbsgi71dwm", g: "€34k", country: "Denmark", markets: "Both", w: "lastobject.com" },
+      { n: "grums", t: "b_46r8c998d2", g: "€31k", country: "Denmark", markets: "Both", w: "grumsaarhus.com" },
+    ],
+    "France": [
+      { n: "VERSATILE PARIS", t: "b_ypz3pf64ey", g: "€377k", country: "France", markets: "Both", w: "versatileparis.com" },
+      { n: "Autour Du Parfum", t: "b_64wmt23635", g: "€302k", country: "France", markets: "Both", w: "autourduparfum.com" },
+      { n: "Panier Des Sens", t: "b_tget9hw9yu", g: "€249k", country: "France", markets: "EU", w: "panierdessens.fr" },
+      { n: "Les Choses Simples", t: "b_demv280kly", g: "€240k", country: "France", markets: "Both", w: "leschosessimples.co" },
+      { n: "MAITRE SAVONITTO", t: "b_dnhf5cbs9f", g: "€195k", country: "France", markets: "Both", w: "maitresavonitto.fr" },
+      { n: "Excellence", t: "b_996g29p2n3", g: "€167k", country: "France", markets: "EU", w: "excellencegrossiste.fr" },
+      { n: "Maison Matine", t: "b_22bjbynh4f", g: "€122k", country: "France", markets: "EU", w: "maisonmatine.com" },
+      { n: "Manucurist", t: "b_dllipxs6m5", g: "€112k", country: "France", markets: "EU", w: "manucurist.com" },
+    ],
+    "Germany": [
+      { n: "Bodynova", t: "b_guj23rfqew", g: "€315k", country: "Germany", markets: "Both", w: "bodynova.de" },
+      { n: "Accentra", t: "b_tjfpzfcw3m", g: "€138k", country: "Germany", markets: "EU", w: "accentra.de" },
+      { n: "Croll & Denecke", t: "b_sunfnrnvzm", g: "€118k", country: "Germany", markets: "Both", w: "crolldenecke.com" },
+      { n: "puremetics GmbH", t: "b_q3jbkjrhut", g: "€57k", country: "Germany", markets: "EU", w: "puremetics.de" },
+      { n: "Myga Europe", t: "b_62t3nt5keq", g: "€55k", country: "Germany", markets: "EU", w: "myga.de" },
+      { n: "PURE U.", t: "b_97e5fpxrr4", g: "€44k", country: "Germany", markets: "EU", w: "pureu.de" },
+      { n: "Biomatea", t: "b_afy5tfm5sf", g: "€36k", country: "Germany", markets: "EU", w: "biomatea.de" },
+      { n: "Grace Cole", t: "b_awtw4ebks3", g: "€31k", country: "Germany", markets: "Both", w: "gracecole.eu" },
+    ],
+    "Greece": [
+      { n: "SKEEN", t: "b_v8ry8p32ab", g: "€70k", country: "Greece", markets: "EU", w: "skeen.gr" },
+      { n: "BMXX Sports Nutrition", t: "b_dje8jcp8wz", g: "€35k", country: "Greece", markets: "EU", w: "bmxxsports.com" },
+    ],
+    "Ireland": [
+      { n: "DERMO SUAVINA UKI", t: "b_88bxxkd72q", g: "€100k", country: "Ireland", markets: "Both", w: "dermosuavina.com" },
+      { n: "UpCircle Beauty Europe", t: "b_p95g7pj4y5", g: "€72k", country: "Ireland", markets: "EU", w: "upcirclebeauty.com" },
+      { n: "Dublin Herbalists", t: "b_53phptwrzo", g: "€69k", country: "Ireland", markets: "Both", w: "dublinherbalists.ie" },
+    ],
+    "Italy": [
+      { n: "IngrossoBeauty by INCI Srl", t: "b_esy65a35ys", g: "€90k", country: "Italy", markets: "EU", w: "ingrossobeauty.altervista.org" },
+      { n: "We Inspire Beauty", t: "b_jpm8bcewg5", g: "€81k", country: "Italy", markets: "EU", w: "weinspirebeauty.com" },
+      { n: "La Saponaria", t: "b_78zngkdyh7", g: "€45k", country: "Italy", markets: "EU", w: "lasaponaria.it" },
+      { n: "KeFood", t: "b_fmqkyspxsg", g: "€34k", country: "Italy", markets: "EU", w: "kefood.it" },
+    ],
+    "Netherlands": [
+      { n: "Moonlight Gemstones", t: "b_gvsu8jyuyx", g: "€118k", country: "Netherlands", markets: "Both", w: "moonlight-gemstones.com" },
+      { n: "Azur Natural Bodycare BV", t: "b_nzea6eyc2g", g: "€118k", country: "Netherlands", markets: "Both", w: "azurnaturalbodycare.nl" },
+      { n: "Bamboozy x Cosmeau", t: "b_jbzakp7b3z", g: "€99k", country: "Netherlands", markets: "Both", w: "bamboozy.com" },
+      { n: "Bon Babef", t: "b_u62v6g5y96", g: "€67k", country: "Netherlands", markets: "EU", w: "bonbabef.com" },
+      { n: "Savons.nl - Savon de marseille distributeur", t: "b_b8k7kms3hq", g: "€55k", country: "Netherlands", markets: "EU", w: "zeepengeurboetiek.nl" },
+      { n: "MDV Shop", t: "b_7cjfg2mvwg", g: "€46k", country: "Netherlands", markets: "EU", w: "styledry.com" },
+      { n: "STARSKIN", t: "b_9xdntapa2s", g: "€39k", country: "Netherlands", markets: "Both", w: "starskin.com" },
+      { n: "Cupplement b.v.", t: "b_mny9brx2hy", g: "€37k", country: "Netherlands", markets: "Both", w: "cupplement.nl" },
+    ],
+    "Poland": [
+      { n: "ACUS MED", t: "b_gs9ghkhjs2", g: "€36k", country: "Poland", markets: "EU", w: "acusmed.pl" },
+    ],
+    "Portugal": [
+      { n: "EKYVAL | Equivalence Perfumes", t: "b_8hjx6euazq", g: "€64k", country: "Portugal", markets: "EU", w: "ekyval.com" },
+      { n: "Parfums Philippe Bérangé", t: "b_79ta3ae2qg", g: "€42k", country: "Portugal", markets: "EU", w: "philippeberange.pro" },
+      { n: "Ofa Karri", t: "b_zgwryyyqfg", g: "€35k", country: "Portugal", markets: "Both", w: "ofakarri.com" },
+    ],
+    "Slovenia": [
+      { n: "Nutrisslim d.o.o.", t: "b_ujt6m5u84p", g: "€104k", country: "Slovenia", markets: "EU", w: "naturesfinest.uk" },
+    ],
+    "Spain": [
+      { n: "Vives de la Cortada S.L", t: "b_c3j9ydxr6t", g: "€527k", country: "Spain", markets: "Both", w: "vivescortadaimport.com" },
+      { n: "Aquarius Cosmetic SLU", t: "b_ryr99e7jtr", g: "€296k", country: "Spain", markets: "EU", w: "aquariuscosmetic.com" },
+      { n: "Matcha & CO", t: "b_8pbavjqbfx", g: "€149k", country: "Spain", markets: "Both", w: "matchaandco.co.uk" },
+      { n: "Yes Love Cosmetics", t: "b_b8y499tvjn", g: "€133k", country: "Spain", markets: "EU", w: "yeslovecosmetics.com" },
+      { n: "AW Artisan", t: "b_dfr6wtbf2t", g: "€129k", country: "Spain", markets: "Both", w: "awartisan.es" },
+      { n: "UniArt", t: "b_gy2hjqt9aj", g: "€106k", country: "Spain", markets: "Both", w: "uniartminerales.com" },
+      { n: "ARTERO Inspiring Style", t: "b_p88umfc7jk", g: "€106k", country: "Spain", markets: "EU", w: "artero.com" },
+      { n: "AMERICAN SUPLEMENT S.L.", t: "b_xerhyzgau9", g: "€103k", country: "Spain", markets: "Both", w: "americansuplement.com" },
+    ],
+    "Sweden": [
+      { n: "Gustaf och Linnea", t: "b_vjxyup9xmj", g: "€79k", country: "Sweden", markets: "Both", w: "gustafochlinnea.se" },
+      { n: "CRA-YON", t: "b_7fc0p6u48f", g: "€48k", country: "Sweden", markets: "Both", w: "cra-yon.com" },
+      { n: "Suntribe", t: "b_9ciilauxzu", g: "€34k", country: "Sweden", markets: "Both", w: "suntribesunscreen.com" },
+    ],
+    "United Kingdom": [
+      { n: "Norfolk Natural Living", t: "b_djr4pfecfc", g: "€665k", country: "United Kingdom", markets: "Both", w: "norfolknaturalliving.com" },
+      { n: "The English Soap Company", t: "b_abb4dfd3eo", g: "€401k", country: "United Kingdom", markets: "EU", w: "theenglishsoapcompany.com" },
+      { n: "Myga", t: "b_un8vtu4uru", g: "€370k", country: "United Kingdom", markets: "Both", w: "myga.eco" },
+      { n: "UpCircle Beauty UK", t: "b_d8pw26ram7", g: "€353k", country: "United Kingdom", markets: "Both", w: "upcirclebeauty.com" },
+      { n: "Napiers", t: "b_c4kupqbj3w", g: "€310k", country: "United Kingdom", markets: "Both", w: "napiers.net" },
+      { n: "Sting in the Tail Ltd", t: "b_j9dmkpkja8", g: "€230k", country: "United Kingdom", markets: "Both", w: "sitt.uk" },
+      { n: "French Soap Wholesale", t: "b_v8zw2qancg", g: "€224k", country: "United Kingdom", markets: "Both", w: "frenchsoapwholesale.com" },
+      { n: "Sweet Bee Organics Ltd", t: "b_abggnn522k", g: "€199k", country: "United Kingdom", markets: "EU", w: "sweetbeeorganics.co.uk" },
+    ],
+  },
+  "Home Decor": {
+    "Austria": [
+      { n: "NaturoTheke", t: "b_r89ry677tm", g: "€84k", country: "Austria", markets: "Both", w: "naturotheke.at" },
+      { n: "isaMi", t: "b_j9bjc6dg4t", g: "€55k", country: "Austria", markets: "EU", w: "isami.at" },
+    ],
+    "Belgium": [
+      { n: "Rex B2B - Europe", t: "b_74qh3f49p5", g: "€337k", country: "Belgium", markets: "EU", w: "rexlondontrade.com" },
+      { n: "Bazar Bizar Living", t: "b_6afyx18cny", g: "€244k", country: "Belgium", markets: "Both", w: "bazarbizar.be" },
+      { n: "helen b", t: "b_1184p2r680", g: "€181k", country: "Belgium", markets: "Both", w: "helenb.be" },
+      { n: "Libeco Home", t: "b_8faaffba", g: "€112k", country: "Belgium", markets: "Both", w: "libeco.com" },
+      { n: "yapatkwa - art of the loom", t: "b_dcfin34dkx", g: "€94k", country: "Belgium", markets: "Both", w: "belgiantapestrieswholesale.be" },
+      { n: "Tiseco", t: "b_gzs54ch866", g: "€91k", country: "Belgium", markets: "EU", w: "tiseco.be" },
+      { n: "Sostraw & SmartThings", t: "b_2wu0qhw44t", g: "€77k", country: "Belgium", markets: "Both", w: "sostraw.be" },
+      { n: "SOUK in the CITY", t: "b_7adpcgrqyx", g: "€66k", country: "Belgium", markets: "Both", w: "soukinthecity.be" },
+    ],
+    "Denmark": [
+      { n: "Rune-Jakobsen Design", t: "b_d7y2squ6mr", g: "€328k", country: "Denmark", markets: "Both", w: "rune-jakobsen.com" },
+      { n: "Koustrupco", t: "b_kq6ug5qx6k", g: "€291k", country: "Denmark", markets: "Both", w: "koustrupco.dk" },
+      { n: "House Nordic", t: "b_uu9fyfhtj4", g: "€281k", country: "Denmark", markets: "EU", w: "housenordic.dk" },
+      { n: "Nordtrice", t: "b_wtmenybdru", g: "€191k", country: "Denmark", markets: "Both", w: "nordtrice.com" },
+      { n: "Aspegren Denmark", t: "b_mpztc6xv6h", g: "€135k", country: "Denmark", markets: "Both", w: "aspegren-denmark.com" },
+      { n: "ChiCura Copenhagen", t: "b_aafb2wyx68", g: "€109k", country: "Denmark", markets: "Both", w: "chicura.com" },
+      { n: "PLINT A/S", t: "b_125jq39e1m", g: "€102k", country: "Denmark", markets: "Both", w: "plint.eu" },
+      { n: "Dyberg Larsen", t: "b_m9m6pn8cg3", g: "€68k", country: "Denmark", markets: "EU", w: "dyberglarsen.com" },
+    ],
+    "France": [
+      { n: "Opjet Paris", t: "b_6robdw0kw7", g: "€1.4M", country: "France", markets: "Both", w: "opjet.com" },
+      { n: "Pepin", t: "b_esvafuubau", g: "€361k", country: "France", markets: "Both", w: "pepin.shop" },
+      { n: "KIBLIND Atelier", t: "b_pasc8gtcf4", g: "€256k", country: "France", markets: "Both", w: "kiblind-store.com" },
+      { n: "Zen'Arôme", t: "b_2eyj2saxv1", g: "€225k", country: "France", markets: "Both", w: "zen-arome.fr" },
+      { n: "L'Échoppe Buissonnière", t: "b_rqqkzc28tp", g: "€223k", country: "France", markets: "Both", w: "lechoppebuissonniere.fr" },
+      { n: "Voglio Bene", t: "b_t9gsa7xer7", g: "€214k", country: "France", markets: "Both", w: "vogliobeneart.com" },
+      { n: "Ogo living", t: "b_5sy7x5niey", g: "€196k", country: "France", markets: "Both", w: "ogoliving.fr" },
+      { n: "L'expressionist", t: "b_yepwu5757v", g: "€188k", country: "France", markets: "Both", w: "lavantgardiste.com" },
+    ],
+    "Germany": [
+      { n: "Eulenschnitt", t: "b_ue6juqu1ld", g: "€698k", country: "Germany", markets: "Both", w: "eulenschnitt.com" },
+      { n: "Out of the blue KG", t: "b_bqm1j6j8aa", g: "€642k", country: "Germany", markets: "EU", w: "ootb.de" },
+      { n: "olivenholz-erleben", t: "b_dmgnc7s9kq", g: "€438k", country: "Germany", markets: "Both", w: "olivenholz-erleben.com" },
+      { n: "Wurm", t: "b_rthnmmrj3p", g: "€383k", country: "Germany", markets: "EU", w: "wurm.com" },
+      { n: "Magazin Minori", t: "b_hwj7khvjy4", g: "€261k", country: "Germany", markets: "Both", w: "magazin-minori.com" },
+      { n: "Zeller Present", t: "b_39mdw66m8e", g: "€222k", country: "Germany", markets: "Both", w: "zeller-present.de" },
+      { n: "Mea-Living", t: "b_skataadcsk", g: "€202k", country: "Germany", markets: "EU", w: "mea-living.de" },
+      { n: "WERNS", t: "b_r75vzqvsqm", g: "€190k", country: "Germany", markets: "Both", w: "hi-werns.com" },
+    ],
+    "Greece": [
+      { n: "AELIA ANNA", t: "b_bz1kc42vkp", g: "€39k", country: "Greece", markets: "Both", w: "aeliaanna.com" },
+    ],
+    "Ireland": [
+      { n: "Rathbornes 1488", t: "b_e7qja1kx9o", g: "€67k", country: "Ireland", markets: "Both", w: "rathbornes1488.com" },
+      { n: "LNH EDIT", t: "b_hc8ydz4d83", g: "€49k", country: "Ireland", markets: "Both", w: "lnhedit.com" },
+    ],
+    "Italy": [
+      { n: "VdE Tivoli 1996", t: "b_xczuwh5rxj", g: "€324k", country: "Italy", markets: "EU", w: "villadestehometivoli.it" },
+      { n: "I-Total, I-Drink", t: "b_c7atr9lxa3", g: "€137k", country: "Italy", markets: "Both", w: "i-total.it" },
+      { n: "Piccolo Seeds", t: "b_3xhkjqyp3t", g: "€85k", country: "Italy", markets: "Both", w: "piccoloseeds.com" },
+      { n: "Giardino Segreto", t: "b_5fb47wz8zj", g: "€83k", country: "Italy", markets: "Both", w: "giardinosegreto.it" },
+      { n: "Casa Amalfi", t: "b_e9v4kstjxx", g: "€77k", country: "Italy", markets: "Both", w: "casamalfi.com" },
+      { n: "ilaria.i", t: "b_cgbsu7je5c", g: "€51k", country: "Italy", markets: "Both", w: "ilariai.com" },
+      { n: "Mepra USA INC", t: "b_ejv4hi9g", g: "€49k", country: "Italy", markets: "US", w: "mepra-store.com" },
+      { n: "24Bottles", t: "b_bwoghwsr", g: "€44k", country: "Italy", markets: "EU", w: "24bottles.com" },
+    ],
+    "Netherlands": [
+      { n: "Wildflowers by Floriette", t: "b_4qm8pqu56k", g: "€676k", country: "Netherlands", markets: "Both", w: "floriette.nl" },
+      { n: "Van Buren", t: "b_f0541hquod", g: "€369k", country: "Netherlands", markets: "Both", w: "vanburenbolsward.nl" },
+      { n: "Green Tree", t: "b_5e2zh5raba", g: "€367k", country: "Netherlands", markets: "Both", w: "greentreecandle.com" },
+      { n: "Sass & Belle Europe", t: "b_4s8ezq3vfk", g: "€342k", country: "Netherlands", markets: "EU", w: "sassandbelletrade.co.uk" },
+      { n: "Housevitamin bv", t: "b_4nrt3ymtpw", g: "€339k", country: "Netherlands", markets: "Both", w: "housevitamin.com" },
+      { n: "Studio Roof (no tariffs)", t: "b_67z5t8tva7", g: "€296k", country: "Netherlands", markets: "US", w: "studioroof.com" },
+      { n: "Sisi, house of style BV", t: "b_x7stuxskaf", g: "€285k", country: "Netherlands", markets: "Both", w: "sisihouseofstyle.com" },
+      { n: "ByBazz", t: "b_esd5jyy2gx", g: "€186k", country: "Netherlands", markets: "EU", w: "bybazz.com" },
+    ],
+    "Poland": [
+      { n: "Puckator EU", t: "b_4qddfh27ab", g: "€145k", country: "Poland", markets: "EU", w: "puckator-wholesale.eu" },
+      { n: "MONDEX Anna i Jerzy Affek Spółka Jawna", t: "b_hqykcj3gmz", g: "€36k", country: "Poland", markets: "EU", w: "mondex.pl" },
+    ],
+    "Portugal": [
+      { n: "Egg Back Home", t: "b_uet68cr86w", g: "€737k", country: "Portugal", markets: "Both", w: "" },
+      { n: "Esoterica Arte", t: "b_976u2p5dw3", g: "€378k", country: "Portugal", markets: "Both", w: "esotericaarte.com" },
+      { n: "Costa Nova", t: "b_6ae4e68d", g: "€133k", country: "Portugal", markets: "EU", w: "costanova.pt" },
+      { n: "CerAmor Cerâmica", t: "b_h2q2jmk7uz", g: "€112k", country: "Portugal", markets: "Both", w: "ceramorceramica.com" },
+      { n: "FH KNIVES", t: "b_qbp756w3aa", g: "€109k", country: "Portugal", markets: "Both", w: "fhknives.com" },
+      { n: "AUM Fragrances", t: "b_724aggakju", g: "€100k", country: "Portugal", markets: "Both", w: "aum.pt" },
+      { n: "Ana Seixas", t: "b_tdagrfrgp5", g: "€94k", country: "Portugal", markets: "Both", w: "anaseixas.com" },
+      { n: "o cactuu", t: "b_9774l2pxfy", g: "€61k", country: "Portugal", markets: "Both", w: "ocactuu.com" },
+    ],
+    "Slovenia": [
+      { n: "Isabelle Rose", t: "b_bnnemyqkpb", g: "€100k", country: "Slovenia", markets: "Both", w: "isabellerosehome.com" },
+    ],
+    "Spain": [
+      { n: "Alfar Tierra Cocida", t: "b_k9kdmxhhnc", g: "€427k", country: "Spain", markets: "Both", w: "alfartierracocida.com" },
+      { n: "Goodnight Light", t: "b_czy6zhrpgp", g: "€344k", country: "Spain", markets: "Both", w: "goodnightlight.eu" },
+      { n: "Ibili", t: "b_kauqe4axs9", g: "€290k", country: "Spain", markets: "Both", w: "ibilimenaje.com" },
+      { n: "Tarta Gelatina", t: "b_7qn27fadrz", g: "€212k", country: "Spain", markets: "Both", w: "tartagelatina.com" },
+      { n: "Balvi", t: "b_4bjh2ieoas", g: "€161k", country: "Spain", markets: "EU", w: "balvi.com" },
+      { n: "ELEVEN PEOPLE", t: "b_3x9p2p92ea", g: "€154k", country: "Spain", markets: "Both", w: "elevenpeople.es" },
+      { n: "to:from", t: "b_6r91d9hknc", g: "€139k", country: "Spain", markets: "Both", w: "tofrom.me" },
+      { n: "SEVENREEDS", t: "b_7rrg1bzm4c", g: "€103k", country: "Spain", markets: "Both", w: "ambientair.es" },
+    ],
+    "Sweden": [
+      { n: "Tell Me More", t: "b_m8er75mehc", g: "€344k", country: "Sweden", markets: "Both", w: "tellmemore.se" },
+      { n: "Carl Oscar", t: "b_3eb83ob15w", g: "€89k", country: "Sweden", markets: "EU", w: "carl-oscar.se" },
+      { n: "Pannonhem AB.", t: "b_fd4gqzdxwc", g: "€81k", country: "Sweden", markets: "Both", w: "keramikblomma.com" },
+      { n: "Skinnwille Home", t: "b_s5rue7mt4c", g: "€77k", country: "Sweden", markets: "EU", w: "skinnwillehome.se" },
+      { n: "BLU KAT", t: "b_1x3zgj1r2u", g: "€54k", country: "Sweden", markets: "Both", w: "blu-kat.com" },
+      { n: "Charlotte Nicolin", t: "b_4s5zpkdy3r", g: "€49k", country: "Sweden", markets: "Both", w: "charlottenicolin.com" },
+      { n: "Born in Sweden AB", t: "b_394gooh83n", g: "€43k", country: "Sweden", markets: "Both", w: "borninsweden.se" },
+      { n: "Sagaform Group", t: "b_bvo4eu1pwl", g: "€38k", country: "Sweden", markets: "EU", w: "byondesign.com" },
+    ],
+    "United Kingdom": [
+      { n: "Something Different Wholesale", t: "b_8qes2mzglv", g: "€2.5M", country: "United Kingdom", markets: "Both", w: "somethingdifferentwholesale.co.uk" },
+      { n: "Rex B2B - UK", t: "b_gu3zjnjdvy", g: "€1.6M", country: "United Kingdom", markets: "EU", w: "rexlondon.com" },
+      { n: "Namaste", t: "b_2y1von4s08", g: "€1.5M", country: "United Kingdom", markets: "Both", w: "namaste-uk.com" },
+      { n: "McGowan & Rutherford Ltd", t: "b_pwzz8d2tdq", g: "€1.2M", country: "United Kingdom", markets: "Both", w: "mcgowanrutherford.co.uk" },
+      { n: "Designworks Collective", t: "b_7gbqw2pnk5", g: "€1.0M", country: "United Kingdom", markets: "EU", w: "designworkscollective.co.uk" },
+      { n: "MÆGEN", t: "b_apmervwd52", g: "€945k", country: "United Kingdom", markets: "Both", w: "maegen.co.uk" },
+      { n: "Magpie", t: "b_5psm3gl9o1", g: "€905k", country: "United Kingdom", markets: "Both", w: "magpiewholesale.com" },
+      { n: "Riva Home", t: "b_42cw7zbev4", g: "€867k", country: "United Kingdom", markets: "Both", w: "rivahome.com" },
+    ],
+  },
+  "Paper & Novelty": {
+    "Austria": [
+      { n: "The City Works", t: "b_ba67isigxs", g: "€52k", country: "Austria", markets: "Both", w: "thecity.works" },
+      { n: "MIAO Papeterie", t: "b_gw29xc6z2u", g: "€43k", country: "Austria", markets: "Both", w: "miaopapeterie.com" },
+    ],
+    "Belgium": [
+      { n: "Kaart Blanche", t: "b_a3yktzzvnd", g: "€81k", country: "Belgium", markets: "Both", w: "kaartblanche.com" },
+      { n: "Olleo Puzzles", t: "b_8fxwtwa49q", g: "€59k", country: "Belgium", markets: "Both", w: "olleopuzzles.com" },
+    ],
+    "Denmark": [
+      { n: "Muud", t: "b_qucepqwbgj", g: "€117k", country: "Denmark", markets: "Both", w: "muudstore.com" },
+      { n: "Penny Puzzle", t: "b_47n3is629m", g: "€96k", country: "Denmark", markets: "Both", w: "boxquiz.dk" },
+      { n: "ViSSEVASSE", t: "b_nkvjkexu5z", g: "€30k", country: "Denmark", markets: "Both", w: "vissevasse.com" },
+    ],
+    "France": [
+      { n: "ALL THE WAYS TO SAY - Europe", t: "b_dis0qxtdnq", g: "€427k", country: "France", markets: "EU", w: "allthewaystosay.com" },
+      { n: "Lise Tailor", t: "b_s48ww5ueez", g: "€253k", country: "France", markets: "Both", w: "lisetailor.com" },
+      { n: "Trevell", t: "b_w4gqa5273h", g: "€228k", country: "France", markets: "Both", w: "trevell.fr" },
+      { n: "Pieces & Peace", t: "b_4fekh3dqw3", g: "€226k", country: "France", markets: "Both", w: "pieces-and-peace.com" },
+      { n: "Jour Ferie", t: "b_ubncgkf8sa", g: "€213k", country: "France", markets: "Both", w: "puzzlejourferie.com" },
+      { n: "Papier Tigre", t: "b_6j24mdrc", g: "€179k", country: "France", markets: "Both", w: "papiertigre.fr" },
+      { n: "Graine Créative", t: "b_pr6dtgawuc", g: "€164k", country: "France", markets: "EU", w: "grainecreative.com" },
+      { n: "Epigram", t: "b_7nj2mespwt", g: "€139k", country: "France", markets: "Both", w: "supplementdam.fr" },
+    ],
+    "Germany": [
+      { n: "Piecely Puzzles", t: "b_fkxp3amm7r", g: "€404k", country: "Germany", markets: "Both", w: "piecelypuzzles.com" },
+      { n: "typealive", t: "b_7kp4tou3ys", g: "€333k", country: "Germany", markets: "Both", w: "typealive.de" },
+      { n: "finimi", t: "b_bufnpqqwfp", g: "€202k", country: "Germany", markets: "EU", w: "finimi.de" },
+      { n: "HERR&FRAUHEMPEL", t: "b_9x9sje7wn8", g: "€201k", country: "Germany", markets: "EU", w: "herrundfrauhempelmarkt.de" },
+      { n: "Pink Stories", t: "b_5oc392wj3o", g: "€173k", country: "Germany", markets: "Both", w: "pinkstories.de" },
+      { n: "Agentur Upleger GmbH & Co. KG", t: "b_baw546tfq1", g: "€159k", country: "Germany", markets: "EU", w: "1730.de" },
+      { n: "Halfbird", t: "b_wb4brnp29m", g: "€155k", country: "Germany", markets: "Both", w: "halfbird.de" },
+      { n: "Anna Cosma", t: "b_z64znu8hce", g: "€110k", country: "Germany", markets: "Both", w: "anna-cosma.de" },
+    ],
+    "Ireland": [
+      { n: "Alljoy Design", t: "b_brbov25aoy", g: "€205k", country: "Ireland", markets: "Both", w: "alljoydesign.com" },
+      { n: "Pickled Pom Pom", t: "b_3gezsrqapg", g: "€68k", country: "Ireland", markets: "EU", w: "pickledpompom.com" },
+    ],
+    "Italy": [
+      { n: "Borgo de' Pazzi - Firenze", t: "b_pvy48j5kd3", g: "€39k", country: "Italy", markets: "Both", w: "borgodepazzi.com" },
+      { n: "Kartos", t: "b_g7ruusbkgh", g: "€32k", country: "Italy", markets: "EU", w: "kartos.it" },
+    ],
+    "Netherlands": [
+      { n: "Botanopia - gifts , decor and cards for plant lovers", t: "b_96z8vpnu6j", g: "€264k", country: "Netherlands", markets: "Both", w: "botanopia.com" },
+      { n: "Hardicraft USA", t: "b_7prmp76fws", g: "€225k", country: "Netherlands", markets: "US", w: "hardicraft.com" },
+      { n: "A-Journal Stationery", t: "b_ezyflutj08", g: "€212k", country: "Netherlands", markets: "Both", w: "a-journal.nl" },
+      { n: "Pepin Press", t: "b_8l946e0m", g: "€147k", country: "Netherlands", markets: "Both", w: "pepinpress.com" },
+      { n: "Studio Inktvis B.V.", t: "b_9x89z6bt3e", g: "€131k", country: "Netherlands", markets: "Both", w: "studioinktvis.com" },
+      { n: "Hardicraft", t: "b_8sy6etp5t7", g: "€119k", country: "Netherlands", markets: "Both", w: "hardicraft.com" },
+      { n: "Studio Soph (We Pay Your Import Fees - We Ship DDP)", t: "b_f2sifb6on1", g: "€106k", country: "Netherlands", markets: "Both", w: "studiosoph.nl" },
+      { n: "Mini Art Products", t: "b_2ko6hfah5z", g: "€104k", country: "Netherlands", markets: "EU", w: "mini-art.nl" },
+    ],
+    "Portugal": [
+      { n: "mishmash", t: "b_91jnva12", g: "€73k", country: "Portugal", markets: "Both", w: "mishmash.pt" },
+      { n: "Hoooked Yarns", t: "b_9b5d5jz296", g: "€40k", country: "Portugal", markets: "Both", w: "hoookedyarn.com" },
+      { n: "Viarco", t: "b_27ltznitnf", g: "€38k", country: "Portugal", markets: "Both", w: "viarco.pt" },
+    ],
+    "Spain": [
+      { n: "CHIC&PAPER", t: "b_66cq8n5bf5", g: "€285k", country: "Spain", markets: "Both", w: "chicandpaper.com" },
+      { n: "Penpaling Paula", t: "b_z3sfzk9hja", g: "€55k", country: "Spain", markets: "Both", w: "penpalingpaula.com" },
+    ],
+    "Sweden": [
+      { n: "Hygge Games", t: "b_e0x8ca3lyb", g: "€208k", country: "Sweden", markets: "US", w: "hyggegames.com" },
+      { n: "Water & Wines", t: "b_j7g5uycttg", g: "€51k", country: "Sweden", markets: "Both", w: "waterandwines.com" },
+    ],
+    "United Kingdom": [
+      { n: "East End Press", t: "b_ck9g3twlve", g: "€1.5M", country: "United Kingdom", markets: "Both", w: "eastendpress.com" },
+      { n: "Archivist US | We cover US import duties 🎉", t: "b_71k1v82vss", g: "€1.3M", country: "United Kingdom", markets: "US", w: "archivistgallery.com" },
+      { n: "Gift Republic", t: "b_99l8rsrsfw", g: "€1.1M", country: "United Kingdom", markets: "US", w: "giftrepublic.com" },
+      { n: "Cambridge Imprint", t: "b_ctifi3e3x7", g: "€852k", country: "United Kingdom", markets: "Both", w: "cambridgeimprint.co.uk" },
+      { n: "Wrap (US duties paid)", t: "b_casabp5p", g: "€653k", country: "United Kingdom", markets: "Both", w: "wrapmagazineshop.com" },
+      { n: "Tom's Studio", t: "b_67rysg9sc9", g: "€570k", country: "United Kingdom", markets: "Both", w: "tomsstudio.com" },
+      { n: "Paper Mirchi", t: "b_3i42wg3pff", g: "€538k", country: "United Kingdom", markets: "Both", w: "papermirchi.co.uk" },
+      { n: "Eleanor Bowmer", t: "b_4ekwy0nh51", g: "€535k", country: "United Kingdom", markets: "Both", w: "eleanorbowmer.co.uk" },
+    ],
+  },
+  "Food & Drink": {
+    "Austria": [
+      { n: "Bake Affair GmbH", t: "b_b5kq3rvrsj", g: "€127k", country: "Austria", markets: "EU", w: "bakeaffair.at" },
+      { n: "Ritonka ...made with love", t: "b_se4a4rez7d", g: "€38k", country: "Austria", markets: "Both", w: "ritonka.com" },
+    ],
+    "Belgium": [
+      { n: "Café-Tasse", t: "b_tajhxqftch", g: "€125k", country: "Belgium", markets: "Both", w: "cafe-tasse.com" },
+      { n: "MEURISSE - est.1845", t: "b_66ivcd0i3g", g: "€91k", country: "Belgium", markets: "EU", w: "meurisse.com" },
+      { n: "Superstories", t: "b_agfb9ng5e2", g: "€66k", country: "Belgium", markets: "EU", w: "superbon.brussels" },
+      { n: "Dolfin", t: "b_hwntfzh5va", g: "€55k", country: "Belgium", markets: "Both", w: "dolfin.be" },
+      { n: "CargoPirate", t: "b_3x7tp35kup", g: "€48k", country: "Belgium", markets: "Both", w: "cargopirate.com" },
+      { n: "Brussels Ketjep", t: "b_47wxbzgpck", g: "€30k", country: "Belgium", markets: "EU", w: "brusselsketjep.com" },
+    ],
+    "Denmark": [
+      { n: "HEY YUM!", t: "b_4jcohcizzi", g: "€48k", country: "Denmark", markets: "Both", w: "heyyum.com" },
+      { n: "The Mallows", t: "b_2ojhtphkeb", g: "€44k", country: "Denmark", markets: "Both", w: "themallows.dk" },
+    ],
+    "France": [
+      { n: "Bacanha", t: "b_2f92789je7", g: "€543k", country: "France", markets: "Both", w: "bacanha.com" },
+      { n: "OLIO DI SERRA", t: "b_euxghjzct8", g: "€370k", country: "France", markets: "EU", w: "oliodiserra.com" },
+      { n: "Cosmic Dealer", t: "b_daqgvxkdf6", g: "€229k", country: "France", markets: "Both", w: "getcosmicdealer.com" },
+      { n: "ADG Diffusion", t: "b_9zs4hyp77q", g: "€207k", country: "France", markets: "EU", w: "adg-diffusion.fr" },
+      { n: "LA SABLESIENNE", t: "b_fjszwfjpbv", g: "€138k", country: "France", markets: "Both", w: "sablesienne.com" },
+      { n: "Les Torréfacteurs Normands", t: "b_y7mk8zebqy", g: "€131k", country: "France", markets: "Both", w: "lestorrefacteurs.cafe" },
+      { n: "La cerise sur l'apéro", t: "b_ef47tpxren", g: "€115k", country: "France", markets: "EU", w: "lacerisesurlapero.com" },
+      { n: "123bonbon", t: "b_7hfyyeng6z", g: "€110k", country: "France", markets: "Both", w: "123bonbon.com" },
+    ],
+    "Germany": [
+      { n: "Greenomic Delicatessen", t: "b_5vgp5gsxgp", g: "€232k", country: "Germany", markets: "EU", w: "greenomic-deli.com" },
+      { n: "Dr. Jaglas", t: "b_htusd58rsw", g: "€126k", country: "Germany", markets: "EU", w: "dr-jaglas.de" },
+      { n: "Kaffee und Schokolade GmbH", t: "b_6h3a9hrab3", g: "€121k", country: "Germany", markets: "Both", w: "madame-cheri.com" },
+      { n: "O.E.L. - Thalassa GmbH & Co. KG", t: "b_2c5a9gkpj2", g: "€89k", country: "Germany", markets: "EU", w: "oel-berlin.de" },
+      { n: "utoppa GmbH", t: "b_55x3mnwkrj", g: "€61k", country: "Germany", markets: "Both", w: "utoppa.com" },
+      { n: "ahead", t: "b_995gyb2nsy", g: "€59k", country: "Germany", markets: "EU", w: "ahead-nutrition.com" },
+      { n: "treatfuls", t: "b_a4etr99rgj", g: "€58k", country: "Germany", markets: "EU", w: "treatfuls.com" },
+      { n: "Royal Nature GmbH & Co. KG - English Tea Shop Germany", t: "b_k4a4uef4f8", g: "€54k", country: "Germany", markets: "EU", w: "ets-tee.de" },
+    ],
+    "Greece": [
+      { n: "yiayia and friends", t: "b_nn4psvysv5", g: "€362k", country: "Greece", markets: "Both", w: "yiayiaandfriends.com" },
+    ],
+    "Ireland": [
+      { n: "Sweet Living Kilkenny", t: "b_qvv94bhyfd", g: "€313k", country: "Ireland", markets: "Both", w: "sweetliving.ie" },
+      { n: "White Mausu Ltd", t: "b_agez4cb4gd", g: "€187k", country: "Ireland", markets: "Both", w: "whitemausu.com" },
+      { n: "Chimac", t: "b_bu484t3x8g", g: "€33k", country: "Ireland", markets: "EU", w: "chimac.ie" },
+    ],
+    "Italy": [
+      { n: "LUSCIOUX - OMNIA GROUP SRL", t: "b_dtzkuwrene", g: "€393k", country: "Italy", markets: "Both", w: "luscioux.it" },
+      { n: "Nolano", t: "b_d886kkd6jj", g: "€294k", country: "Italy", markets: "Both", w: "nolanoitaly.it" },
+      { n: "Vincotto Balsamico Gianni Calogiuri Azienda Agricola", t: "b_j3fvvwj6xh", g: "€224k", country: "Italy", markets: "Both", w: "vincotto1825.com" },
+      { n: "CONVIVIA for italian food lovers", t: "b_nxas8zh9se", g: "€207k", country: "Italy", markets: "Both", w: "convivia.it" },
+      { n: "Le Dolcezze di Nanni", t: "b_kmsrxc6hjr", g: "€105k", country: "Italy", markets: "EU", w: "ledolcezzedinanni.com" },
+      { n: "Aledi Pasticceria in Bronte", t: "b_6spb3hwxgu", g: "€75k", country: "Italy", markets: "Both", w: "aledibronte.it" },
+      { n: "Cioccolato Lavoratti 1938", t: "b_hpduznuffj", g: "€67k", country: "Italy", markets: "Both", w: "lavoratti.it" },
+      { n: "Bio Orto Società Cooperativa Agricola", t: "b_xsaawz5akg", g: "€62k", country: "Italy", markets: "Both", w: "bio-orto.com" },
+    ],
+    "Netherlands": [
+      { n: "Williams Premium Canned Cocktails", t: "b_kv8fbjqcme", g: "€60k", country: "Netherlands", markets: "EU", w: "williamscocktails.nl" },
+      { n: "WOW Chocolao!", t: "b_p9ncuq9yn7", g: "€46k", country: "Netherlands", markets: "Both", w: "peppeltd.nl" },
+      { n: "SureShot", t: "b_68gsvnctue", g: "€45k", country: "Netherlands", markets: "EU", w: "le-panier.eu" },
+      { n: "Lovechock", t: "b_dfhyu0wduz", g: "€39k", country: "Netherlands", markets: "EU", w: "lovechock.com" },
+      { n: "Vinoos - Wine Stories", t: "b_9x8erem6q7", g: "€36k", country: "Netherlands", markets: "Both", w: "vinoos.nl" },
+      { n: "Love in a Box Chocolatier", t: "b_55pxcwsape", g: "€34k", country: "Netherlands", markets: "EU", w: "liabox.com" },
+      { n: "De Weldaad Authentic Interior", t: "b_338zncv5zg", g: "€34k", country: "Netherlands", markets: "Both", w: "authentic-interior.com" },
+      { n: "SAPINCA", t: "b_4kxq8e5cuv", g: "€32k", country: "Netherlands", markets: "EU", w: "sapinca.com" },
+    ],
+    "Portugal": [
+      { n: "Sardinha", t: "b_4tb6znb67m", g: "€287k", country: "Portugal", markets: "Both", w: "sardinha.pt" },
+      { n: "Conserveira do Arade", t: "b_udz883c3ty", g: "€70k", country: "Portugal", markets: "Both", w: "conserveiradoarade.com" },
+      { n: "Ayamani Naturals", t: "b_uhck73wp2x", g: "€43k", country: "Portugal", markets: "Both", w: "ayamaninaturals.com" },
+      { n: "Muka", t: "b_sh7cyp3jbw", g: "€35k", country: "Portugal", markets: "Both", w: "muka.pt" },
+    ],
+    "Spain": [
+      { n: "Lady Joseph", t: "b_rpd75vr4re", g: "€158k", country: "Spain", markets: "Both", w: "ladyjoseph.com" },
+      { n: "Nutty Artisan Foods SL", t: "b_shac7hqmcm", g: "€119k", country: "Spain", markets: "Both", w: "nuttyartisanfoods.com" },
+      { n: "La Chinata", t: "b_2pqu5zgjnw", g: "€65k", country: "Spain", markets: "EU", w: "lachinata.es" },
+      { n: "Northern Tea Company", t: "b_377nz2umq2", g: "€64k", country: "Spain", markets: "Both", w: "myteapop.com" },
+      { n: "LoRUSSo", t: "b_df8skkue49", g: "€57k", country: "Spain", markets: "Both", w: "lorussofood.com" },
+      { n: "Premium Brand", t: "b_wrk57phd9f", g: "€54k", country: "Spain", markets: "EU", w: "havanna.com.es" },
+      { n: "Plaza del sol", t: "b_aq2zkj66xp", g: "€43k", country: "Spain", markets: "EU", w: "plazadelsol.es" },
+      { n: "Valhalla Hidromiel", t: "b_jqc93au6cd", g: "€33k", country: "Spain", markets: "EU", w: "valhallahidromiel.com" },
+    ],
+    "Sweden": [
+      { n: "Nordicbangers - Swedish Candy Supply", t: "b_z3hay42ykc", g: "€1.0M", country: "Sweden", markets: "Both", w: "nordicbangers.com" },
+      { n: "Swedish Candy.Store - Swedish Candy", t: "b_dd3262hz7q", g: "€146k", country: "Sweden", markets: "Both", w: "thenordichype.com" },
+      { n: "Swedishcandy.store US", t: "b_sftthdw8xm", g: "€91k", country: "Sweden", markets: "US", w: "swedishcandy.store" },
+      { n: "Swedelicious - Wholesale Swedish Candy", t: "b_axyt5y6g3y", g: "€69k", country: "Sweden", markets: "Both", w: "patternbyetsy.com" },
+      { n: "Lakritsbolaget", t: "b_5lun0wo5ue", g: "€30k", country: "Sweden", markets: "Both", w: "lakritsbolaget.se" },
+    ],
+    "Switzerland": [
+      { n: "Rhythm108", t: "b_4r9r5wuy6y", g: "€48k", country: "Switzerland", markets: "Both", w: "rhythm108.com" },
+    ],
+    "United Kingdom": [
+      { n: "Harth Chocolate", t: "b_44fg4hsqbp", g: "€502k", country: "United Kingdom", markets: "Both", w: "harthchocolate.com" },
+      { n: "Gaffney's Sweets & Treats Wholesale", t: "b_k7fr2rzeu8", g: "€452k", country: "United Kingdom", markets: "Both", w: "gaffneyssweetsandtreats.co.uk" },
+      { n: "UP-UP Chocolate", t: "b_pfehtv2j3w", g: "€393k", country: "United Kingdom", markets: "Both", w: "upupchocolate.com" },
+      { n: "COCO Chocolatier", t: "b_29yp7lwzox", g: "€331k", country: "United Kingdom", markets: "Both", w: "cocochocolatier.com" },
+      { n: "Olives Et Al", t: "b_dz40npc2du", g: "€307k", country: "United Kingdom", markets: "Both", w: "olivesetal.co.uk" },
+      { n: "OTHERLY: OATM*LK CHOCOLATE", t: "b_f5vdmtwqm8", g: "€284k", country: "United Kingdom", markets: "Both", w: "otherly.co.uk" },
+      { n: "The Chocolate Society", t: "b_x77u5zyeth", g: "€208k", country: "United Kingdom", markets: "Both", w: "chocolate.co.uk" },
+      { n: "Ocelot Chocolate", t: "b_49y4esazzq", g: "€184k", country: "United Kingdom", markets: "EU", w: "ocelotchocolate.com" },
+    ],
+  },
+  "Women": {
+    "Belgium": [
+      { n: "ZEEN", t: "b_dx8kg6gxc5", g: "€116k", country: "Belgium", markets: "Both", w: "zeen.be" },
+      { n: "Neuville", t: "b_urfpz4g2xj", g: "€93k", country: "Belgium", markets: "Both", w: "neuville.io" },
+      { n: "ESCUYER", t: "b_cuzkop0pfr", g: "€78k", country: "Belgium", markets: "Both", w: "escuyer.com" },
+      { n: "Muno", t: "b_7knmwfxrs9", g: "€56k", country: "Belgium", markets: "Both", w: "muno.be" },
+      { n: "Timeless London", t: "b_vy6rxusmbg", g: "€37k", country: "Belgium", markets: "Both", w: "timelesslondon.co.uk" },
+      { n: "Mamsy", t: "b_ktxkezpc7w", g: "€33k", country: "Belgium", markets: "EU", w: "mamsy.be" },
+    ],
+    "Germany": [
+      { n: "by Vivi. e. K.", t: "b_e4bbvlz0w9", g: "€689k", country: "Germany", markets: "Both", w: "by-vivi.de" },
+      { n: "sasstie", t: "b_d2peh899t8", g: "€368k", country: "Germany", markets: "Both", w: "sasstie-shop.com" },
+      { n: "No Bad Days Club", t: "b_tgza643tfn", g: "€175k", country: "Germany", markets: "EU", w: "nbdc.de" },
+      { n: "KING KEROSIN", t: "b_gndevp9uzk", g: "€161k", country: "Germany", markets: "Both", w: "kingkerosin.com" },
+    ],
+    "Switzerland": [
+      { n: "The Refined Spirit", t: "b_8m9bkr4zvw", g: "€34k", country: "Switzerland", markets: "Both", w: "therefinedspirit.com" },
+    ],
+  },
+  "Men": {
+    "France": [
+      { n: "BILLYBELT", t: "b_bj4z508wqx", g: "€514k", country: "France", markets: "Both", w: "billybelt.com" },
+      { n: "Grafitee", t: "b_hydv59mmn9", g: "€161k", country: "France", markets: "Both", w: "grafitee.fr" },
+      { n: "Juste un t-shirt", t: "b_8w54j9r7mq", g: "€124k", country: "France", markets: "Both", w: "justeuntshirt.com" },
+      { n: "Yves Enzo", t: "b_zv7wdkm2a8", g: "€79k", country: "France", markets: "Both", w: "yvesenzo.fr" },
+      { n: "Painful Clothing", t: "b_sj84enr7c8", g: "€41k", country: "France", markets: "Both", w: "painfulclothing.com" },
+      { n: "Zayne Paris", t: "b_ma5bjjz294", g: "€30k", country: "France", markets: "Both", w: "zayneparis.com" },
+    ],
+    "Germany": [
+      { n: "ART SOX - MuseARTa GmbH", t: "b_9fnkf87et2", g: "€110k", country: "Germany", markets: "US", w: "art-sox.com" },
+      { n: "arrel - responsible apparel", t: "b_et59cesyc2", g: "€61k", country: "Germany", markets: "EU", w: "arrel.de" },
+      { n: "MuseARTa GmbH", t: "b_cdsw5faceh", g: "€45k", country: "Germany", markets: "EU", w: "musearta.com" },
+    ],
+    "Netherlands": [
+      { n: "Kinderkoffertjes.nl", t: "b_f0ndwl9b4g", g: "€47k", country: "Netherlands", markets: "Both", w: "kinderkoffertjes.nl" },
+    ],
+    "Portugal": [
+      { n: "Altercos", t: "b_xcmqgt5b6d", g: "€32k", country: "Portugal", markets: "Both", w: "altercos.com" },
+    ],
+    "Spain": [
+      { n: "Custi Mikelo: Made in Spain", t: "b_xtapjke6cp", g: "€310k", country: "Spain", markets: "Both", w: "custimikelo.es" },
+      { n: "Fantastico Fans", t: "b_u6txahs29x", g: "€50k", country: "Spain", markets: "Both", w: "fantasticofans.com" },
+      { n: "A FAN OF", t: "b_6mqd4mgjd0", g: "€39k", country: "Spain", markets: "Both", w: "afanof.eu" },
+    ],
+    "United Kingdom": [
+      { n: "Yarmouth Oilskins", t: "b_1mn9zxvkxv", g: "€87k", country: "United Kingdom", markets: "Both", w: "yarmouthoilskins.com" },
+      { n: "Sophos", t: "b_3wa356dza6", g: "€82k", country: "United Kingdom", markets: "EU", w: "sophoslifestyle.co.uk" },
+      { n: "Rosy Roo", t: "b_64zytpq9f9", g: "€71k", country: "United Kingdom", markets: "EU", w: "rosyroo.co.uk" },
+      { n: "Steepletone UK Ltd", t: "b_6s5c2hej75", g: "€68k", country: "United Kingdom", markets: "Both", w: "steepletone.co.uk" },
+      { n: "Spiral", t: "b_xuux64bt3m", g: "€59k", country: "United Kingdom", markets: "Both", w: "spiralusa.com" },
+      { n: "Peper Harow Socks", t: "b_9byf8u171q", g: "€55k", country: "United Kingdom", markets: "Both", w: "peperharowengland.com" },
+      { n: "Pierre Francis", t: "b_jnqucfrqw4", g: "€53k", country: "United Kingdom", markets: "Both", w: "pierrefrancis.co.uk" },
+      { n: "Heritage Traditions", t: "b_baadfg5o92", g: "€46k", country: "United Kingdom", markets: "Both", w: "heritage-traditions.com" },
+    ],
+  },
+  "Jewelry": {
+    "Belgium": [
+      { n: "Huracan", t: "b_8nerej6tan", g: "€43k", country: "Belgium", markets: "Both", w: "lifestylebyhuracan.com" },
+    ],
+    "France": [
+      { n: "Agapée Jewelry (We cover US, UK Import Duties)", t: "b_2rh5jwjkzg", g: "€1.4M", country: "France", markets: "Both", w: "agape-studio.com" },
+      { n: "COSMOS", t: "b_mkrb4pczja", g: "€378k", country: "France", markets: "Both", w: "microstore.app" },
+      { n: "MAISON KIZO", t: "b_h7gj2g6q8f", g: "€299k", country: "France", markets: "EU", w: "kizo-boutique.com" },
+      { n: "GINANDGER", t: "b_7bk2qgeapv", g: "€232k", country: "France", markets: "Both", w: "ginandger.com" },
+      { n: "Foliesbijoux", t: "b_pm8rc7nh2r", g: "€230k", country: "France", markets: "Both", w: "foliesbijoux.com" },
+      { n: "MALICIEUSE", t: "b_9yrhhdqn9t", g: "€211k", country: "France", markets: "Both", w: "malicieuse.fr" },
+      { n: "Victoire Collection", t: "b_mctxqf9ry5", g: "€161k", country: "France", markets: "Both", w: "" },
+      { n: "Sophie Deschamps Bijoux", t: "b_j5zjfwkqj4", g: "€137k", country: "France", markets: "Both", w: "sophiedeschampsbijoux.com" },
+    ],
+    "Germany": [
+      { n: "Parsley & Pepper", t: "b_z2g2z6f3rb", g: "€292k", country: "Germany", markets: "Both", w: "parsleyandpepper.de" },
+      { n: "Schmuckoo x Noyre Berlin", t: "b_bsl4e1sh", g: "€275k", country: "Germany", markets: "Both", w: "schmuckoo.de" },
+      { n: "Schmuckgroßhandel", t: "b_aubkfckd7v", g: "€147k", country: "Germany", markets: "Both", w: "diamondmode.de" },
+      { n: "Leaf Gold Jewelry", t: "b_ybmm97cmy9", g: "€123k", country: "Germany", markets: "Both", w: "leaf-jewelry.com" },
+      { n: "Niemalsmehrohne", t: "b_xuewhx7hdw", g: "€105k", country: "Germany", markets: "EU", w: "niemalsmehrohne.de" },
+      { n: "von Lani = Jewellry + Suncatchers", t: "b_ypcvfp4vpj", g: "€88k", country: "Germany", markets: "Both", w: "vonlani.de" },
+      { n: "Fräulein Tapir", t: "b_cpu2s0nhc4", g: "€64k", country: "Germany", markets: "Both", w: "fraeuleintapir.de" },
+      { n: "Campur GmbH", t: "b_sj8h9mhaqa", g: "€35k", country: "Germany", markets: "Both", w: "campur.de" },
+    ],
+    "Greece": [
+      { n: "Goupi (US Duties Paid)", t: "b_ycczru6bws", g: "€257k", country: "Greece", markets: "Both", w: "goupilab.com" },
+      { n: "Funk Da Queen", t: "b_3esy3er8qb", g: "€45k", country: "Greece", markets: "Both", w: "funkdaqueen.com" },
+    ],
+    "Ireland": [
+      { n: "Celtic Ore Crafts", t: "b_kbx2nhkfyy", g: "€82k", country: "Ireland", markets: "Both", w: "celticorecrafts.com" },
+      { n: "Naoi", t: "b_dmb33uezkw", g: "€40k", country: "Ireland", markets: "EU", w: "naoistore.com" },
+    ],
+    "Italy": [
+      { n: "AMORINO SRL", t: "b_zc366mkj5k", g: "€206k", country: "Italy", markets: "Both", w: "amorino1.com" },
+      { n: "DUESTELLE ITALIA", t: "b_3mm8he3ws2", g: "€91k", country: "Italy", markets: "Both", w: "duestelleitalia.it" },
+      { n: "Awaken", t: "b_pntx8vkece", g: "€69k", country: "Italy", markets: "Both", w: "awakenpiercing.com" },
+      { n: "Rosalba Galati SRL", t: "b_ewkbz6grvh", g: "€40k", country: "Italy", markets: "Both", w: "rosalbagalati.com" },
+    ],
+    "Netherlands": [
+      { n: "Bazou", t: "b_9qv2bhnwv6", g: "€633k", country: "Netherlands", markets: "Both", w: "bazou.nl" },
+      { n: "Love Ibiza", t: "b_azsy62co16", g: "€136k", country: "Netherlands", markets: "EU", w: "loveibiza.nl" },
+      { n: "Sansira Jewelry", t: "b_ab7apvqxmn", g: "€116k", country: "Netherlands", markets: "Both", w: "sansira.nl" },
+      { n: "Rosies", t: "b_eddn6gxgbx", g: "€72k", country: "Netherlands", markets: "Both", w: "lillyrose.nl" },
+      { n: "WAUW Fashion", t: "b_6xgdvj3rrf", g: "€34k", country: "Netherlands", markets: "EU", w: "wauwbijoux.nl" },
+      { n: "LanLivia", t: "b_pypw64c7zf", g: "€32k", country: "Netherlands", markets: "Both", w: "cicidejewelry.nl" },
+    ],
+    "Portugal": [
+      { n: "Tenda Mística", t: "b_xnaq29n8n8", g: "€46k", country: "Portugal", markets: "Both", w: "tendamistica.pt" },
+    ],
+    "Spain": [
+      { n: "Sonata", t: "b_f2fdj86qha", g: "€554k", country: "Spain", markets: "Both", w: "sonatachic.es" },
+      { n: "Cassette Barcelona", t: "b_d88a3974qq", g: "€474k", country: "Spain", markets: "Both", w: "cassetteonline.eu" },
+      { n: "CUCOCUCA", t: "b_zw4wbqjumh", g: "€90k", country: "Spain", markets: "Both", w: "cucocuca.com" },
+      { n: "Lamu Brand", t: "b_vhhebgsu5a", g: "€30k", country: "Spain", markets: "Both", w: "lamujoyas.com" },
+    ],
+    "Switzerland": [
+      { n: "Jowissa", t: "b_yuut2v9h5q", g: "€37k", country: "Switzerland", markets: "Both", w: "jowissa.com" },
+    ],
+    "United Kingdom": [
+      { n: "Lisa Angel (US Duties Paid)", t: "b_7ddw7ybd9o", g: "€1.0M", country: "United Kingdom", markets: "Both", w: "lisaangel.co.uk" },
+      { n: "My Doris", t: "b_crdmx665gm", g: "€450k", country: "United Kingdom", markets: "Both", w: "mydoris.co.uk" },
+      { n: "VIE", t: "b_3qdxv6nlio", g: "€293k", country: "United Kingdom", markets: "Both", w: "global1st.co.uk" },
+      { n: "Pineapple Island", t: "b_8qpu6gjkao", g: "€271k", country: "United Kingdom", markets: "Both", w: "pineapple-island.com" },
+      { n: "Last True Angel", t: "b_hze6wg7sww", g: "€232k", country: "United Kingdom", markets: "Both", w: "whiteleafcompany.co.uk" },
+      { n: "Bill Skinner", t: "b_bmva37js30", g: "€216k", country: "United Kingdom", markets: "Both", w: "billskinnerstudio.com" },
+      { n: "Silk Purse, Sow's Ear", t: "b_h7h7kearbx", g: "€198k", country: "United Kingdom", markets: "Both", w: "silkpursesowsear.com" },
+      { n: "Ocean Ripples", t: "b_8k8td7j73m", g: "€190k", country: "United Kingdom", markets: "Both", w: "oceanripples.co.uk" },
+    ],
+  },
+  "Kids & Baby": {
+    "Austria": [
+      { n: "Annie & Charles", t: "b_6h59vcndxn", g: "€209k", country: "Austria", markets: "Both", w: "annieandcharles.com" },
+      { n: "Glückskind", t: "b_86ywaeryew", g: "€36k", country: "Austria", markets: "EU", w: "glueckskind-shop.at" },
+    ],
+    "Belgium": [
+      { n: "WILD & SOFT", t: "b_9g9x14ijyd", g: "€76k", country: "Belgium", markets: "Both", w: "wildandsoft.com" },
+    ],
+    "Denmark": [
+      { n: "Gamcha", t: "b_5aqlq93l27", g: "€87k", country: "Denmark", markets: "Both", w: "gamcha.org" },
+      { n: "Saga Copenhagen", t: "b_9sskg942qq", g: "€76k", country: "Denmark", markets: "Both", w: "saga-copenhagen.com" },
+      { n: "Magni ApS", t: "b_4ugvqkxsyg", g: "€70k", country: "Denmark", markets: "Both", w: "magni.dk" },
+      { n: "Barbo Toys", t: "b_bjsez8xwns", g: "€41k", country: "Denmark", markets: "EU", w: "barbo-toys.com" },
+    ],
+    "France": [
+      { n: "Bonheur du Jour", t: "b_7fsh6983h3", g: "€481k", country: "France", markets: "Both", w: "bonheurdujourparis.com" },
+      { n: "Luciole et Petit Pois", t: "b_6lqtbha6ao", g: "€216k", country: "France", markets: "Both", w: "lucioleetpetitpois.com" },
+      { n: "Ratatam!", t: "b_1estecxz", g: "€186k", country: "France", markets: "Both", w: "ratatamkids.com" },
+      { n: "Créa Lign'", t: "b_s6qy74asbv", g: "€123k", country: "France", markets: "EU", w: "crealign.com" },
+      { n: "Ulysse Couleurs d'Enfance", t: "b_1c2q2dc8u8", g: "€110k", country: "France", markets: "EU", w: "comulysse.eu" },
+      { n: "Kontiki", t: "b_edu564nccz", g: "€92k", country: "France", markets: "EU", w: "kontiki.fr" },
+      { n: "Zakuw", t: "b_37zaw4kdz8", g: "€84k", country: "France", markets: "EU", w: "zakuw.com" },
+      { n: "Les Déglingos, France", t: "b_1zeb9n6xg5", g: "€72k", country: "France", markets: "Both", w: "deglingos.com" },
+    ],
+    "Germany": [
+      { n: "Teddy Hermann", t: "b_363xwtxps4", g: "€344k", country: "Germany", markets: "Both", w: "teddy-hermann.de" },
+      { n: "Duckshop", t: "b_rcknwzqvba", g: "€281k", country: "Germany", markets: "Both", w: "duckshop.de" },
+      { n: "Liliput", t: "b_ra7qmu9m2n", g: "€263k", country: "Germany", markets: "Both", w: "liliput-shop.de" },
+      { n: "Uni Toys", t: "b_jgdn94u58f", g: "€239k", country: "Germany", markets: "Both", w: "uni-toys.de" },
+      { n: "Senger-Naturwelt", t: "b_8t0znzedbz", g: "€216k", country: "Germany", markets: "Both", w: "senger-naturwelt.de" },
+      { n: "the cotton cloud", t: "b_3z0vpcmgf8", g: "€184k", country: "Germany", markets: "Both", w: "thecottoncloud.com" },
+      { n: "small foot", t: "b_hycmtnbext", g: "€177k", country: "Germany", markets: "EU", w: "legler-online.com" },
+      { n: "Fehn", t: "b_v5mm82rvhu", g: "€106k", country: "Germany", markets: "EU", w: "fehn.de" },
+    ],
+    "Ireland": [
+      { n: "Ryan Town Toys & Gifts", t: "b_7b5nqszarf", g: "€39k", country: "Ireland", markets: "Both", w: "ryantowntoys.ie" },
+    ],
+    "Italy": [
+      { n: "Joy Toy", t: "b_th6zdpbbr9", g: "€39k", country: "Italy", markets: "EU", w: "joy-toy.com" },
+    ],
+    "Netherlands": [
+      { n: "Commotion (Europe) BV", t: "b_cqhuvx2lcb", g: "€173k", country: "Netherlands", markets: "EU", w: "tickit.co.uk" },
+      { n: "Rammelaartje", t: "b_f2fhf7ymak", g: "€140k", country: "Netherlands", markets: "EU", w: "rammelaartje.nl" },
+      { n: "New Classic Toys", t: "b_b849m2tp7n", g: "€109k", country: "Netherlands", markets: "US", w: "newclassictoys.com" },
+      { n: "Kico Label", t: "b_5pwq8fwr5c", g: "€90k", country: "Netherlands", markets: "EU", w: "kicolabel.com" },
+      { n: "We Are Wovens", t: "b_pmt7m65u9m", g: "€89k", country: "Netherlands", markets: "EU", w: "wearewovens.com" },
+      { n: "Squishable EU", t: "b_34saxamsr7", g: "€75k", country: "Netherlands", markets: "EU", w: "squishable.com" },
+      { n: "Global Affairs", t: "b_5f1hbluqsr", g: "€49k", country: "Netherlands", markets: "Both", w: "globalaffairs.nl" },
+      { n: "Finch & Fable", t: "b_253ddb63", g: "€47k", country: "Netherlands", markets: "Both", w: "kidwild.com" },
+    ],
+    "Poland": [
+      { n: "Wooden Story Sp. z o.o.", t: "b_f3d2zuxfhd", g: "€101k", country: "Poland", markets: "Both", w: "woodenstory.com" },
+      { n: "Ander", t: "b_gvqex76987", g: "€94k", country: "Poland", markets: "Both", w: "ander.net.pl" },
+      { n: "Babyly", t: "b_5jxam766ae", g: "€32k", country: "Poland", markets: "Both", w: "babyly.pl" },
+      { n: "milin", t: "b_gq536mudy6", g: "€30k", country: "Poland", markets: "Both", w: "milin.pl" },
+    ],
+    "Portugal": [
+      { n: "Cotton Socks", t: "b_gvnnnu5bqh", g: "€115k", country: "Portugal", markets: "Both", w: "cottonsocks.eu" },
+      { n: "FS Baby", t: "b_2wzt7211eh", g: "€47k", country: "Portugal", markets: "Both", w: "fs-baby.com" },
+      { n: "Maria Jasmim Baby & Child", t: "b_p2kvrxupyr", g: "€44k", country: "Portugal", markets: "Both", w: "mariajasmimonlinestore.com" },
+      { n: "Ativo Kids", t: "b_jncdvhyf4c", g: "€42k", country: "Portugal", markets: "EU", w: "ativokids.com" },
+      { n: "Bean Baby Clothes", t: "b_k8msxd4xdm", g: "€33k", country: "Portugal", markets: "Both", w: "bean.pt" },
+      { n: "Amorim Gerações, LDA", t: "b_ntvmgsa83p", g: "€30k", country: "Portugal", markets: "Both", w: "amorimgeracoes.com" },
+    ],
+    "Slovenia": [
+      { n: "PETITE EvelinaApparel", t: "b_98i19ffkb0", g: "€36k", country: "Slovenia", markets: "Both", w: "evelina-apparel.com" },
+    ],
+    "Spain": [
+      { n: "Tutete", t: "b_9hzr819i4s", g: "€440k", country: "Spain", markets: "Both", w: "tutete.com" },
+      { n: "KALID MEDIEVAL", t: "b_6inokc7ssf", g: "€172k", country: "Spain", markets: "Both", w: "kalidmedieval.com" },
+      { n: "Mastoys, S.L.", t: "b_kt3jsh2rfk", g: "€157k", country: "Spain", markets: "Both", w: "mastoys.com" },
+      { n: "Newness Kids", t: "b_cfvqm148bn", g: "€119k", country: "Spain", markets: "Both", w: "newnessuk.co.uk" },
+      { n: "Nines Artesanals d'Onil Dolls", t: "b_269wrwcnqm", g: "€113k", country: "Spain", markets: "Both", w: "ninesdeonil.com" },
+      { n: "Orange Toys", t: "b_5xahaaujud", g: "€88k", country: "Spain", markets: "Both", w: "cyalmyr.es" },
+      { n: "KARACTERMANIA", t: "b_bqptphdkjg", g: "€76k", country: "Spain", markets: "EU", w: "karactermania.com" },
+      { n: "Banwood SL Europe", t: "b_bttbfxtbkx", g: "€65k", country: "Spain", markets: "EU", w: "banwood.com" },
+    ],
+    "Sweden": [
+      { n: "Teddykompaniet", t: "b_1bknrcese8", g: "€94k", country: "Sweden", markets: "EU", w: "teddykompaniet.se" },
+      { n: "Summerville organic", t: "b_9mt9fb8b9c", g: "€77k", country: "Sweden", markets: "Both", w: "summervilleorganic.com" },
+    ],
+    "United Kingdom": [
+      { n: "Donna Wilson", t: "b_dph92kc5", g: "€562k", country: "United Kingdom", markets: "Both", w: "donnawilson.com" },
+      { n: "Rockahula Kids US", t: "b_eu0t56a6ra", g: "€489k", country: "United Kingdom", markets: "Both", w: "rockahulakids.com" },
+      { n: "Floss and Rock", t: "b_64my7faxge", g: "€434k", country: "United Kingdom", markets: "US", w: "flossandrock.com" },
+      { n: "Cotton Twist (WE PREPAY ALL USA DUTIES)", t: "b_1mphed2qel", g: "€394k", country: "United Kingdom", markets: "Both", w: "cottontwist.co.uk" },
+      { n: "Jomanda Soft Toys & Accessories - UK Based", t: "b_812bbeqlm1", g: "€371k", country: "United Kingdom", markets: "Both", w: "jomandatrade.com" },
+      { n: "Little Green Radicals", t: "b_213u1no6f0", g: "€323k", country: "United Kingdom", markets: "Both", w: "littlegreenradicals.co.uk" },
+      { n: "ThreadBear Design UK/EU", t: "b_cjzfjc2xkc", g: "€322k", country: "United Kingdom", markets: "EU", w: "threadbeardesign.co.uk" },
+      { n: "Hippychick", t: "b_70h2mxs0tw", g: "€275k", country: "United Kingdom", markets: "Both", w: "hippychick.com" },
+    ],
+  },
+  "Women's Apparel": {
+    "Belgium": [
+      { n: "ZEEN", t: "b_dx8kg6gxc5", g: "€116k", country: "Belgium", markets: "Both", w: "zeen.be" },
+      { n: "Neuville", t: "b_urfpz4g2xj", g: "€93k", country: "Belgium", markets: "Both", w: "neuville.io" },
+      { n: "ESCUYER", t: "b_cuzkop0pfr", g: "€78k", country: "Belgium", markets: "Both", w: "escuyer.com" },
+      { n: "Muno", t: "b_7knmwfxrs9", g: "€56k", country: "Belgium", markets: "Both", w: "muno.be" },
+      { n: "Timeless London", t: "b_vy6rxusmbg", g: "€37k", country: "Belgium", markets: "Both", w: "timelesslondon.co.uk" },
+      { n: "Mamsy", t: "b_ktxkezpc7w", g: "€33k", country: "Belgium", markets: "EU", w: "mamsy.be" },
+    ],
+    "Germany": [
+      { n: "by Vivi. e. K.", t: "b_e4bbvlz0w9", g: "€689k", country: "Germany", markets: "Both", w: "by-vivi.de" },
+      { n: "sasstie", t: "b_d2peh899t8", g: "€368k", country: "Germany", markets: "Both", w: "sasstie-shop.com" },
+      { n: "No Bad Days Club", t: "b_tgza643tfn", g: "€175k", country: "Germany", markets: "EU", w: "nbdc.de" },
+      { n: "KING KEROSIN", t: "b_gndevp9uzk", g: "€161k", country: "Germany", markets: "Both", w: "kingkerosin.com" },
+    ],
+    "Switzerland": [
+      { n: "The Refined Spirit", t: "b_8m9bkr4zvw", g: "€34k", country: "Switzerland", markets: "Both", w: "therefinedspirit.com" },
+    ],
+  },
+  "Women's Accessories": {
+    "Belgium": [
+      { n: "ZEEN", t: "b_dx8kg6gxc5", g: "€116k", country: "Belgium", markets: "Both", w: "zeen.be" },
+      { n: "Neuville", t: "b_urfpz4g2xj", g: "€93k", country: "Belgium", markets: "Both", w: "neuville.io" },
+      { n: "ESCUYER", t: "b_cuzkop0pfr", g: "€78k", country: "Belgium", markets: "Both", w: "escuyer.com" },
+      { n: "Muno", t: "b_7knmwfxrs9", g: "€56k", country: "Belgium", markets: "Both", w: "muno.be" },
+      { n: "Timeless London", t: "b_vy6rxusmbg", g: "€37k", country: "Belgium", markets: "Both", w: "timelesslondon.co.uk" },
+      { n: "Mamsy", t: "b_ktxkezpc7w", g: "€33k", country: "Belgium", markets: "EU", w: "mamsy.be" },
+    ],
+    "Germany": [
+      { n: "by Vivi. e. K.", t: "b_e4bbvlz0w9", g: "€689k", country: "Germany", markets: "Both", w: "by-vivi.de" },
+      { n: "sasstie", t: "b_d2peh899t8", g: "€368k", country: "Germany", markets: "Both", w: "sasstie-shop.com" },
+      { n: "No Bad Days Club", t: "b_tgza643tfn", g: "€175k", country: "Germany", markets: "EU", w: "nbdc.de" },
+      { n: "KING KEROSIN", t: "b_gndevp9uzk", g: "€161k", country: "Germany", markets: "Both", w: "kingkerosin.com" },
+    ],
+    "Switzerland": [
+      { n: "The Refined Spirit", t: "b_8m9bkr4zvw", g: "€34k", country: "Switzerland", markets: "Both", w: "therefinedspirit.com" },
+    ],
+  },
+  "Men's Apparel": {
+    "France": [
+      { n: "BILLYBELT", t: "b_bj4z508wqx", g: "€514k", country: "France", markets: "Both", w: "billybelt.com" },
+      { n: "Grafitee", t: "b_hydv59mmn9", g: "€161k", country: "France", markets: "Both", w: "grafitee.fr" },
+      { n: "Juste un t-shirt", t: "b_8w54j9r7mq", g: "€124k", country: "France", markets: "Both", w: "justeuntshirt.com" },
+      { n: "Yves Enzo", t: "b_zv7wdkm2a8", g: "€79k", country: "France", markets: "Both", w: "yvesenzo.fr" },
+      { n: "Painful Clothing", t: "b_sj84enr7c8", g: "€41k", country: "France", markets: "Both", w: "painfulclothing.com" },
+      { n: "Zayne Paris", t: "b_ma5bjjz294", g: "€30k", country: "France", markets: "Both", w: "zayneparis.com" },
+    ],
+    "Germany": [
+      { n: "ART SOX - MuseARTa GmbH", t: "b_9fnkf87et2", g: "€110k", country: "Germany", markets: "US", w: "art-sox.com" },
+      { n: "arrel - responsible apparel", t: "b_et59cesyc2", g: "€61k", country: "Germany", markets: "EU", w: "arrel.de" },
+      { n: "MuseARTa GmbH", t: "b_cdsw5faceh", g: "€45k", country: "Germany", markets: "EU", w: "musearta.com" },
+    ],
+    "Netherlands": [
+      { n: "Kinderkoffertjes.nl", t: "b_f0ndwl9b4g", g: "€47k", country: "Netherlands", markets: "Both", w: "kinderkoffertjes.nl" },
+    ],
+    "Portugal": [
+      { n: "Altercos", t: "b_xcmqgt5b6d", g: "€32k", country: "Portugal", markets: "Both", w: "altercos.com" },
+    ],
+    "Spain": [
+      { n: "Custi Mikelo: Made in Spain", t: "b_xtapjke6cp", g: "€310k", country: "Spain", markets: "Both", w: "custimikelo.es" },
+      { n: "Fantastico Fans", t: "b_u6txahs29x", g: "€50k", country: "Spain", markets: "Both", w: "fantasticofans.com" },
+      { n: "A FAN OF", t: "b_6mqd4mgjd0", g: "€39k", country: "Spain", markets: "Both", w: "afanof.eu" },
+    ],
+    "United Kingdom": [
+      { n: "Yarmouth Oilskins", t: "b_1mn9zxvkxv", g: "€87k", country: "United Kingdom", markets: "Both", w: "yarmouthoilskins.com" },
+      { n: "Sophos", t: "b_3wa356dza6", g: "€82k", country: "United Kingdom", markets: "EU", w: "sophoslifestyle.co.uk" },
+      { n: "Rosy Roo", t: "b_64zytpq9f9", g: "€71k", country: "United Kingdom", markets: "EU", w: "rosyroo.co.uk" },
+      { n: "Steepletone UK Ltd", t: "b_6s5c2hej75", g: "€68k", country: "United Kingdom", markets: "Both", w: "steepletone.co.uk" },
+      { n: "Spiral", t: "b_xuux64bt3m", g: "€59k", country: "United Kingdom", markets: "Both", w: "spiralusa.com" },
+      { n: "Peper Harow Socks", t: "b_9byf8u171q", g: "€55k", country: "United Kingdom", markets: "Both", w: "peperharowengland.com" },
+      { n: "Pierre Francis", t: "b_jnqucfrqw4", g: "€53k", country: "United Kingdom", markets: "Both", w: "pierrefrancis.co.uk" },
+      { n: "Heritage Traditions", t: "b_baadfg5o92", g: "€46k", country: "United Kingdom", markets: "Both", w: "heritage-traditions.com" },
+    ],
+  },
+  "Kids & Baby - Non-Apparel": {
+    "Austria": [
+      { n: "Annie & Charles", t: "b_6h59vcndxn", g: "€209k", country: "Austria", markets: "Both", w: "annieandcharles.com" },
+      { n: "Glückskind", t: "b_86ywaeryew", g: "€36k", country: "Austria", markets: "EU", w: "glueckskind-shop.at" },
+    ],
+    "Belgium": [
+      { n: "WILD & SOFT", t: "b_9g9x14ijyd", g: "€76k", country: "Belgium", markets: "Both", w: "wildandsoft.com" },
+    ],
+    "Denmark": [
+      { n: "Gamcha", t: "b_5aqlq93l27", g: "€87k", country: "Denmark", markets: "Both", w: "gamcha.org" },
+      { n: "Saga Copenhagen", t: "b_9sskg942qq", g: "€76k", country: "Denmark", markets: "Both", w: "saga-copenhagen.com" },
+      { n: "Magni ApS", t: "b_4ugvqkxsyg", g: "€70k", country: "Denmark", markets: "Both", w: "magni.dk" },
+      { n: "Barbo Toys", t: "b_bjsez8xwns", g: "€41k", country: "Denmark", markets: "EU", w: "barbo-toys.com" },
+    ],
+    "France": [
+      { n: "Bonheur du Jour", t: "b_7fsh6983h3", g: "€481k", country: "France", markets: "Both", w: "bonheurdujourparis.com" },
+      { n: "Luciole et Petit Pois", t: "b_6lqtbha6ao", g: "€216k", country: "France", markets: "Both", w: "lucioleetpetitpois.com" },
+      { n: "Ratatam!", t: "b_1estecxz", g: "€186k", country: "France", markets: "Both", w: "ratatamkids.com" },
+      { n: "Créa Lign'", t: "b_s6qy74asbv", g: "€123k", country: "France", markets: "EU", w: "crealign.com" },
+      { n: "Ulysse Couleurs d'Enfance", t: "b_1c2q2dc8u8", g: "€110k", country: "France", markets: "EU", w: "comulysse.eu" },
+      { n: "Kontiki", t: "b_edu564nccz", g: "€92k", country: "France", markets: "EU", w: "kontiki.fr" },
+      { n: "Zakuw", t: "b_37zaw4kdz8", g: "€84k", country: "France", markets: "EU", w: "zakuw.com" },
+      { n: "Les Déglingos, France", t: "b_1zeb9n6xg5", g: "€72k", country: "France", markets: "Both", w: "deglingos.com" },
+    ],
+    "Germany": [
+      { n: "Teddy Hermann", t: "b_363xwtxps4", g: "€344k", country: "Germany", markets: "Both", w: "teddy-hermann.de" },
+      { n: "Duckshop", t: "b_rcknwzqvba", g: "€281k", country: "Germany", markets: "Both", w: "duckshop.de" },
+      { n: "Liliput", t: "b_ra7qmu9m2n", g: "€263k", country: "Germany", markets: "Both", w: "liliput-shop.de" },
+      { n: "Uni Toys", t: "b_jgdn94u58f", g: "€239k", country: "Germany", markets: "Both", w: "uni-toys.de" },
+      { n: "Senger-Naturwelt", t: "b_8t0znzedbz", g: "€216k", country: "Germany", markets: "Both", w: "senger-naturwelt.de" },
+      { n: "the cotton cloud", t: "b_3z0vpcmgf8", g: "€184k", country: "Germany", markets: "Both", w: "thecottoncloud.com" },
+      { n: "small foot", t: "b_hycmtnbext", g: "€177k", country: "Germany", markets: "EU", w: "legler-online.com" },
+      { n: "Fehn", t: "b_v5mm82rvhu", g: "€106k", country: "Germany", markets: "EU", w: "fehn.de" },
+    ],
+    "Ireland": [
+      { n: "Ryan Town Toys & Gifts", t: "b_7b5nqszarf", g: "€39k", country: "Ireland", markets: "Both", w: "ryantowntoys.ie" },
+    ],
+    "Italy": [
+      { n: "Joy Toy", t: "b_th6zdpbbr9", g: "€39k", country: "Italy", markets: "EU", w: "joy-toy.com" },
+    ],
+    "Netherlands": [
+      { n: "Commotion (Europe) BV", t: "b_cqhuvx2lcb", g: "€173k", country: "Netherlands", markets: "EU", w: "tickit.co.uk" },
+      { n: "Rammelaartje", t: "b_f2fhf7ymak", g: "€140k", country: "Netherlands", markets: "EU", w: "rammelaartje.nl" },
+      { n: "New Classic Toys", t: "b_b849m2tp7n", g: "€109k", country: "Netherlands", markets: "US", w: "newclassictoys.com" },
+      { n: "Kico Label", t: "b_5pwq8fwr5c", g: "€90k", country: "Netherlands", markets: "EU", w: "kicolabel.com" },
+      { n: "We Are Wovens", t: "b_pmt7m65u9m", g: "€89k", country: "Netherlands", markets: "EU", w: "wearewovens.com" },
+      { n: "Squishable EU", t: "b_34saxamsr7", g: "€75k", country: "Netherlands", markets: "EU", w: "squishable.com" },
+      { n: "Global Affairs", t: "b_5f1hbluqsr", g: "€49k", country: "Netherlands", markets: "Both", w: "globalaffairs.nl" },
+      { n: "Finch & Fable", t: "b_253ddb63", g: "€47k", country: "Netherlands", markets: "Both", w: "kidwild.com" },
+    ],
+    "Poland": [
+      { n: "Wooden Story Sp. z o.o.", t: "b_f3d2zuxfhd", g: "€101k", country: "Poland", markets: "Both", w: "woodenstory.com" },
+      { n: "Ander", t: "b_gvqex76987", g: "€94k", country: "Poland", markets: "Both", w: "ander.net.pl" },
+      { n: "Babyly", t: "b_5jxam766ae", g: "€32k", country: "Poland", markets: "Both", w: "babyly.pl" },
+      { n: "milin", t: "b_gq536mudy6", g: "€30k", country: "Poland", markets: "Both", w: "milin.pl" },
+    ],
+    "Portugal": [
+      { n: "Cotton Socks", t: "b_gvnnnu5bqh", g: "€115k", country: "Portugal", markets: "Both", w: "cottonsocks.eu" },
+      { n: "FS Baby", t: "b_2wzt7211eh", g: "€47k", country: "Portugal", markets: "Both", w: "fs-baby.com" },
+      { n: "Maria Jasmim Baby & Child", t: "b_p2kvrxupyr", g: "€44k", country: "Portugal", markets: "Both", w: "mariajasmimonlinestore.com" },
+      { n: "Ativo Kids", t: "b_jncdvhyf4c", g: "€42k", country: "Portugal", markets: "EU", w: "ativokids.com" },
+      { n: "Bean Baby Clothes", t: "b_k8msxd4xdm", g: "€33k", country: "Portugal", markets: "Both", w: "bean.pt" },
+      { n: "Amorim Gerações, LDA", t: "b_ntvmgsa83p", g: "€30k", country: "Portugal", markets: "Both", w: "amorimgeracoes.com" },
+    ],
+    "Slovenia": [
+      { n: "PETITE EvelinaApparel", t: "b_98i19ffkb0", g: "€36k", country: "Slovenia", markets: "Both", w: "evelina-apparel.com" },
+    ],
+    "Spain": [
+      { n: "Tutete", t: "b_9hzr819i4s", g: "€440k", country: "Spain", markets: "Both", w: "tutete.com" },
+      { n: "KALID MEDIEVAL", t: "b_6inokc7ssf", g: "€172k", country: "Spain", markets: "Both", w: "kalidmedieval.com" },
+      { n: "Mastoys, S.L.", t: "b_kt3jsh2rfk", g: "€157k", country: "Spain", markets: "Both", w: "mastoys.com" },
+      { n: "Newness Kids", t: "b_cfvqm148bn", g: "€119k", country: "Spain", markets: "Both", w: "newnessuk.co.uk" },
+      { n: "Nines Artesanals d'Onil Dolls", t: "b_269wrwcnqm", g: "€113k", country: "Spain", markets: "Both", w: "ninesdeonil.com" },
+      { n: "Orange Toys", t: "b_5xahaaujud", g: "€88k", country: "Spain", markets: "Both", w: "cyalmyr.es" },
+      { n: "KARACTERMANIA", t: "b_bqptphdkjg", g: "€76k", country: "Spain", markets: "EU", w: "karactermania.com" },
+      { n: "Banwood SL Europe", t: "b_bttbfxtbkx", g: "€65k", country: "Spain", markets: "EU", w: "banwood.com" },
+    ],
+    "Sweden": [
+      { n: "Teddykompaniet", t: "b_1bknrcese8", g: "€94k", country: "Sweden", markets: "EU", w: "teddykompaniet.se" },
+      { n: "Summerville organic", t: "b_9mt9fb8b9c", g: "€77k", country: "Sweden", markets: "Both", w: "summervilleorganic.com" },
+    ],
+    "United Kingdom": [
+      { n: "Donna Wilson", t: "b_dph92kc5", g: "€562k", country: "United Kingdom", markets: "Both", w: "donnawilson.com" },
+      { n: "Rockahula Kids US", t: "b_eu0t56a6ra", g: "€489k", country: "United Kingdom", markets: "Both", w: "rockahulakids.com" },
+      { n: "Floss and Rock", t: "b_64my7faxge", g: "€434k", country: "United Kingdom", markets: "US", w: "flossandrock.com" },
+      { n: "Cotton Twist (WE PREPAY ALL USA DUTIES)", t: "b_1mphed2qel", g: "€394k", country: "United Kingdom", markets: "Both", w: "cottontwist.co.uk" },
+      { n: "Jomanda Soft Toys & Accessories - UK Based", t: "b_812bbeqlm1", g: "€371k", country: "United Kingdom", markets: "Both", w: "jomandatrade.com" },
+      { n: "Little Green Radicals", t: "b_213u1no6f0", g: "€323k", country: "United Kingdom", markets: "Both", w: "littlegreenradicals.co.uk" },
+      { n: "ThreadBear Design UK/EU", t: "b_cjzfjc2xkc", g: "€322k", country: "United Kingdom", markets: "EU", w: "threadbeardesign.co.uk" },
+      { n: "Hippychick", t: "b_70h2mxs0tw", g: "€275k", country: "United Kingdom", markets: "Both", w: "hippychick.com" },
+    ],
+  },
+};
+
+const COMP_EU = {
+  "Beauty & Wellness": [
+    { n: "Bodynova", t: "b_guj23rfqew", g: "€315k", country: "Germany", markets: "Both", w: "bodynova.de" },
+    { n: "Accentra", t: "b_tjfpzfcw3m", g: "€138k", country: "Germany", markets: "EU", w: "accentra.de" },
+    { n: "Croll & Denecke", t: "b_sunfnrnvzm", g: "€118k", country: "Germany", markets: "Both", w: "crolldenecke.com" },
+    { n: "puremetics GmbH", t: "b_q3jbkjrhut", g: "€57k", country: "Germany", markets: "EU", w: "puremetics.de" },
+    { n: "Myga Europe", t: "b_62t3nt5keq", g: "€55k", country: "Germany", markets: "EU", w: "myga.de" },
+    { n: "PURE U.", t: "b_97e5fpxrr4", g: "€44k", country: "Germany", markets: "EU", w: "pureu.de" },
+    { n: "Biomatea", t: "b_afy5tfm5sf", g: "€36k", country: "Germany", markets: "EU", w: "biomatea.de" },
+    { n: "Grace Cole", t: "b_awtw4ebks3", g: "€31k", country: "Germany", markets: "Both", w: "gracecole.eu" },
+    { n: "PRIMAVERA", t: "b_nrjauvcjds", g: "€30k", country: "Germany", markets: "EU", w: "primaveralife.com" },
+    { n: "Moonchild Yoga Wear", t: "b_9fctpwh9m0", g: "€128k", country: "Denmark", markets: "Both", w: "moonchildyogawear.com" },
+    { n: "Yuaia Haircare", t: "b_em6jmgca58", g: "€78k", country: "Denmark", markets: "EU", w: "yummihaircare.dk" },
+    { n: "LastObject", t: "b_dbsgi71dwm", g: "€34k", country: "Denmark", markets: "Both", w: "lastobject.com" },
+  ],
+  "Home Decor": [
+    { n: "NaturoTheke", t: "b_r89ry677tm", g: "€84k", country: "Austria", markets: "Both", w: "naturotheke.at" },
+    { n: "isaMi", t: "b_j9bjc6dg4t", g: "€55k", country: "Austria", markets: "EU", w: "isami.at" },
+    { n: "Rex B2B - Europe", t: "b_74qh3f49p5", g: "€337k", country: "Belgium", markets: "EU", w: "rexlondontrade.com" },
+    { n: "Bazar Bizar Living", t: "b_6afyx18cny", g: "€244k", country: "Belgium", markets: "Both", w: "bazarbizar.be" },
+    { n: "helen b", t: "b_1184p2r680", g: "€181k", country: "Belgium", markets: "Both", w: "helenb.be" },
+    { n: "Libeco Home", t: "b_8faaffba", g: "€112k", country: "Belgium", markets: "Both", w: "libeco.com" },
+    { n: "yapatkwa - art of the loom", t: "b_dcfin34dkx", g: "€94k", country: "Belgium", markets: "Both", w: "belgiantapestrieswholesale.be" },
+    { n: "Tiseco", t: "b_gzs54ch866", g: "€91k", country: "Belgium", markets: "EU", w: "tiseco.be" },
+    { n: "Sostraw & SmartThings", t: "b_2wu0qhw44t", g: "€77k", country: "Belgium", markets: "Both", w: "sostraw.be" },
+    { n: "SOUK in the CITY", t: "b_7adpcgrqyx", g: "€66k", country: "Belgium", markets: "Both", w: "soukinthecity.be" },
+    { n: "MAD ABOUT MATS", t: "b_gnwxjwxnsm", g: "€38k", country: "Belgium", markets: "EU", w: "madaboutmats.com" },
+    { n: "Be Home", t: "b_ebivi0gz", g: "€37k", country: "Belgium", markets: "EU", w: "behome.com" },
+  ],
+  "Paper & Novelty": [
+    { n: "The City Works", t: "b_ba67isigxs", g: "€52k", country: "Austria", markets: "Both", w: "thecity.works" },
+    { n: "MIAO Papeterie", t: "b_gw29xc6z2u", g: "€43k", country: "Austria", markets: "Both", w: "miaopapeterie.com" },
+    { n: "Kaart Blanche", t: "b_a3yktzzvnd", g: "€81k", country: "Belgium", markets: "Both", w: "kaartblanche.com" },
+    { n: "Olleo Puzzles", t: "b_8fxwtwa49q", g: "€59k", country: "Belgium", markets: "Both", w: "olleopuzzles.com" },
+    { n: "Piecely Puzzles", t: "b_fkxp3amm7r", g: "€404k", country: "Germany", markets: "Both", w: "piecelypuzzles.com" },
+    { n: "typealive", t: "b_7kp4tou3ys", g: "€333k", country: "Germany", markets: "Both", w: "typealive.de" },
+    { n: "finimi", t: "b_bufnpqqwfp", g: "€202k", country: "Germany", markets: "EU", w: "finimi.de" },
+    { n: "HERR&FRAUHEMPEL", t: "b_9x9sje7wn8", g: "€201k", country: "Germany", markets: "EU", w: "herrundfrauhempelmarkt.de" },
+    { n: "Pink Stories", t: "b_5oc392wj3o", g: "€173k", country: "Germany", markets: "Both", w: "pinkstories.de" },
+    { n: "Agentur Upleger GmbH & Co. KG", t: "b_baw546tfq1", g: "€159k", country: "Germany", markets: "EU", w: "1730.de" },
+    { n: "Halfbird", t: "b_wb4brnp29m", g: "€155k", country: "Germany", markets: "Both", w: "halfbird.de" },
+    { n: "Anna Cosma", t: "b_z64znu8hce", g: "€110k", country: "Germany", markets: "Both", w: "anna-cosma.de" },
+  ],
+  "Food & Drink": [
+    { n: "Bake Affair GmbH", t: "b_b5kq3rvrsj", g: "€127k", country: "Austria", markets: "EU", w: "bakeaffair.at" },
+    { n: "Ritonka ...made with love", t: "b_se4a4rez7d", g: "€38k", country: "Austria", markets: "Both", w: "ritonka.com" },
+    { n: "Café-Tasse", t: "b_tajhxqftch", g: "€125k", country: "Belgium", markets: "Both", w: "cafe-tasse.com" },
+    { n: "MEURISSE - est.1845", t: "b_66ivcd0i3g", g: "€91k", country: "Belgium", markets: "EU", w: "meurisse.com" },
+    { n: "Superstories", t: "b_agfb9ng5e2", g: "€66k", country: "Belgium", markets: "EU", w: "superbon.brussels" },
+    { n: "Dolfin", t: "b_hwntfzh5va", g: "€55k", country: "Belgium", markets: "Both", w: "dolfin.be" },
+    { n: "CargoPirate", t: "b_3x7tp35kup", g: "€48k", country: "Belgium", markets: "Both", w: "cargopirate.com" },
+    { n: "Brussels Ketjep", t: "b_47wxbzgpck", g: "€30k", country: "Belgium", markets: "EU", w: "brusselsketjep.com" },
+    { n: "Rhythm108", t: "b_4r9r5wuy6y", g: "€48k", country: "Switzerland", markets: "Both", w: "rhythm108.com" },
+    { n: "Greenomic Delicatessen", t: "b_5vgp5gsxgp", g: "€232k", country: "Germany", markets: "EU", w: "greenomic-deli.com" },
+    { n: "Dr. Jaglas", t: "b_htusd58rsw", g: "€126k", country: "Germany", markets: "EU", w: "dr-jaglas.de" },
+    { n: "Kaffee und Schokolade GmbH", t: "b_6h3a9hrab3", g: "€121k", country: "Germany", markets: "Both", w: "madame-cheri.com" },
+  ],
+  "Women": [
+    { n: "ZEEN", t: "b_dx8kg6gxc5", g: "€116k", country: "Belgium", markets: "Both", w: "zeen.be" },
+    { n: "Neuville", t: "b_urfpz4g2xj", g: "€93k", country: "Belgium", markets: "Both", w: "neuville.io" },
+    { n: "ESCUYER", t: "b_cuzkop0pfr", g: "€78k", country: "Belgium", markets: "Both", w: "escuyer.com" },
+    { n: "Muno", t: "b_7knmwfxrs9", g: "€56k", country: "Belgium", markets: "Both", w: "muno.be" },
+    { n: "Timeless London", t: "b_vy6rxusmbg", g: "€37k", country: "Belgium", markets: "Both", w: "timelesslondon.co.uk" },
+    { n: "Mamsy", t: "b_ktxkezpc7w", g: "€33k", country: "Belgium", markets: "EU", w: "mamsy.be" },
+    { n: "The Refined Spirit", t: "b_8m9bkr4zvw", g: "€34k", country: "Switzerland", markets: "Both", w: "therefinedspirit.com" },
+    { n: "by Vivi. e. K.", t: "b_e4bbvlz0w9", g: "€689k", country: "Germany", markets: "Both", w: "by-vivi.de" },
+    { n: "sasstie", t: "b_d2peh899t8", g: "€368k", country: "Germany", markets: "Both", w: "sasstie-shop.com" },
+    { n: "No Bad Days Club", t: "b_tgza643tfn", g: "€175k", country: "Germany", markets: "EU", w: "nbdc.de" },
+    { n: "KING KEROSIN", t: "b_gndevp9uzk", g: "€161k", country: "Germany", markets: "Both", w: "kingkerosin.com" },
+  ],
+  "Men": [
+    { n: "ART SOX - MuseARTa GmbH", t: "b_9fnkf87et2", g: "€110k", country: "Germany", markets: "US", w: "art-sox.com" },
+    { n: "arrel - responsible apparel", t: "b_et59cesyc2", g: "€61k", country: "Germany", markets: "EU", w: "arrel.de" },
+    { n: "MuseARTa GmbH", t: "b_cdsw5faceh", g: "€45k", country: "Germany", markets: "EU", w: "musearta.com" },
+    { n: "Custi Mikelo: Made in Spain", t: "b_xtapjke6cp", g: "€310k", country: "Spain", markets: "Both", w: "custimikelo.es" },
+    { n: "Fantastico Fans", t: "b_u6txahs29x", g: "€50k", country: "Spain", markets: "Both", w: "fantasticofans.com" },
+    { n: "A FAN OF", t: "b_6mqd4mgjd0", g: "€39k", country: "Spain", markets: "Both", w: "afanof.eu" },
+    { n: "BILLYBELT", t: "b_bj4z508wqx", g: "€514k", country: "France", markets: "Both", w: "billybelt.com" },
+    { n: "Grafitee", t: "b_hydv59mmn9", g: "€161k", country: "France", markets: "Both", w: "grafitee.fr" },
+    { n: "Juste un t-shirt", t: "b_8w54j9r7mq", g: "€124k", country: "France", markets: "Both", w: "justeuntshirt.com" },
+    { n: "Yves Enzo", t: "b_zv7wdkm2a8", g: "€79k", country: "France", markets: "Both", w: "yvesenzo.fr" },
+    { n: "Painful Clothing", t: "b_sj84enr7c8", g: "€41k", country: "France", markets: "Both", w: "painfulclothing.com" },
+    { n: "Zayne Paris", t: "b_ma5bjjz294", g: "€30k", country: "France", markets: "Both", w: "zayneparis.com" },
+  ],
+  "Jewelry": [
+    { n: "Huracan", t: "b_8nerej6tan", g: "€43k", country: "Belgium", markets: "Both", w: "lifestylebyhuracan.com" },
+    { n: "Jowissa", t: "b_yuut2v9h5q", g: "€37k", country: "Switzerland", markets: "Both", w: "jowissa.com" },
+    { n: "Parsley & Pepper", t: "b_z2g2z6f3rb", g: "€292k", country: "Germany", markets: "Both", w: "parsleyandpepper.de" },
+    { n: "Schmuckoo x Noyre Berlin", t: "b_bsl4e1sh", g: "€275k", country: "Germany", markets: "Both", w: "schmuckoo.de" },
+    { n: "Schmuckgroßhandel", t: "b_aubkfckd7v", g: "€147k", country: "Germany", markets: "Both", w: "diamondmode.de" },
+    { n: "Leaf Gold Jewelry", t: "b_ybmm97cmy9", g: "€123k", country: "Germany", markets: "Both", w: "leaf-jewelry.com" },
+    { n: "Niemalsmehrohne", t: "b_xuewhx7hdw", g: "€105k", country: "Germany", markets: "EU", w: "niemalsmehrohne.de" },
+    { n: "von Lani = Jewellry + Suncatchers", t: "b_ypcvfp4vpj", g: "€88k", country: "Germany", markets: "Both", w: "vonlani.de" },
+    { n: "Fräulein Tapir", t: "b_cpu2s0nhc4", g: "€64k", country: "Germany", markets: "Both", w: "fraeuleintapir.de" },
+    { n: "Campur GmbH", t: "b_sj8h9mhaqa", g: "€35k", country: "Germany", markets: "Both", w: "campur.de" },
+    { n: "Sonata", t: "b_f2fdj86qha", g: "€554k", country: "Spain", markets: "Both", w: "sonatachic.es" },
+    { n: "Cassette Barcelona", t: "b_d88a3974qq", g: "€474k", country: "Spain", markets: "Both", w: "cassetteonline.eu" },
+  ],
+  "Kids & Baby": [
+    { n: "Annie & Charles", t: "b_6h59vcndxn", g: "€209k", country: "Austria", markets: "Both", w: "annieandcharles.com" },
+    { n: "Glückskind", t: "b_86ywaeryew", g: "€36k", country: "Austria", markets: "EU", w: "glueckskind-shop.at" },
+    { n: "WILD & SOFT", t: "b_9g9x14ijyd", g: "€76k", country: "Belgium", markets: "Both", w: "wildandsoft.com" },
+    { n: "Teddy Hermann", t: "b_363xwtxps4", g: "€344k", country: "Germany", markets: "Both", w: "teddy-hermann.de" },
+    { n: "Duckshop", t: "b_rcknwzqvba", g: "€281k", country: "Germany", markets: "Both", w: "duckshop.de" },
+    { n: "Liliput", t: "b_ra7qmu9m2n", g: "€263k", country: "Germany", markets: "Both", w: "liliput-shop.de" },
+    { n: "Uni Toys", t: "b_jgdn94u58f", g: "€239k", country: "Germany", markets: "Both", w: "uni-toys.de" },
+    { n: "Senger-Naturwelt", t: "b_8t0znzedbz", g: "€216k", country: "Germany", markets: "Both", w: "senger-naturwelt.de" },
+    { n: "the cotton cloud", t: "b_3z0vpcmgf8", g: "€184k", country: "Germany", markets: "Both", w: "thecottoncloud.com" },
+    { n: "small foot", t: "b_hycmtnbext", g: "€177k", country: "Germany", markets: "EU", w: "legler-online.com" },
+    { n: "Fehn", t: "b_v5mm82rvhu", g: "€106k", country: "Germany", markets: "EU", w: "fehn.de" },
+    { n: "Pat & Patty", t: "b_1wngx4xkzh", g: "€54k", country: "Germany", markets: "Both", w: "patundpatty.de" },
+  ],
+  "Women's Apparel": [
+    { n: "ZEEN", t: "b_dx8kg6gxc5", g: "€116k", country: "Belgium", markets: "Both", w: "zeen.be" },
+    { n: "Neuville", t: "b_urfpz4g2xj", g: "€93k", country: "Belgium", markets: "Both", w: "neuville.io" },
+    { n: "ESCUYER", t: "b_cuzkop0pfr", g: "€78k", country: "Belgium", markets: "Both", w: "escuyer.com" },
+    { n: "Muno", t: "b_7knmwfxrs9", g: "€56k", country: "Belgium", markets: "Both", w: "muno.be" },
+    { n: "Timeless London", t: "b_vy6rxusmbg", g: "€37k", country: "Belgium", markets: "Both", w: "timelesslondon.co.uk" },
+    { n: "Mamsy", t: "b_ktxkezpc7w", g: "€33k", country: "Belgium", markets: "EU", w: "mamsy.be" },
+    { n: "The Refined Spirit", t: "b_8m9bkr4zvw", g: "€34k", country: "Switzerland", markets: "Both", w: "therefinedspirit.com" },
+    { n: "by Vivi. e. K.", t: "b_e4bbvlz0w9", g: "€689k", country: "Germany", markets: "Both", w: "by-vivi.de" },
+    { n: "sasstie", t: "b_d2peh899t8", g: "€368k", country: "Germany", markets: "Both", w: "sasstie-shop.com" },
+    { n: "No Bad Days Club", t: "b_tgza643tfn", g: "€175k", country: "Germany", markets: "EU", w: "nbdc.de" },
+    { n: "KING KEROSIN", t: "b_gndevp9uzk", g: "€161k", country: "Germany", markets: "Both", w: "kingkerosin.com" },
+  ],
+  "Women's Accessories": [
+    { n: "ZEEN", t: "b_dx8kg6gxc5", g: "€116k", country: "Belgium", markets: "Both", w: "zeen.be" },
+    { n: "Neuville", t: "b_urfpz4g2xj", g: "€93k", country: "Belgium", markets: "Both", w: "neuville.io" },
+    { n: "ESCUYER", t: "b_cuzkop0pfr", g: "€78k", country: "Belgium", markets: "Both", w: "escuyer.com" },
+    { n: "Muno", t: "b_7knmwfxrs9", g: "€56k", country: "Belgium", markets: "Both", w: "muno.be" },
+    { n: "Timeless London", t: "b_vy6rxusmbg", g: "€37k", country: "Belgium", markets: "Both", w: "timelesslondon.co.uk" },
+    { n: "Mamsy", t: "b_ktxkezpc7w", g: "€33k", country: "Belgium", markets: "EU", w: "mamsy.be" },
+    { n: "The Refined Spirit", t: "b_8m9bkr4zvw", g: "€34k", country: "Switzerland", markets: "Both", w: "therefinedspirit.com" },
+    { n: "by Vivi. e. K.", t: "b_e4bbvlz0w9", g: "€689k", country: "Germany", markets: "Both", w: "by-vivi.de" },
+    { n: "sasstie", t: "b_d2peh899t8", g: "€368k", country: "Germany", markets: "Both", w: "sasstie-shop.com" },
+    { n: "No Bad Days Club", t: "b_tgza643tfn", g: "€175k", country: "Germany", markets: "EU", w: "nbdc.de" },
+    { n: "KING KEROSIN", t: "b_gndevp9uzk", g: "€161k", country: "Germany", markets: "Both", w: "kingkerosin.com" },
+  ],
+  "Men's Apparel": [
+    { n: "ART SOX - MuseARTa GmbH", t: "b_9fnkf87et2", g: "€110k", country: "Germany", markets: "US", w: "art-sox.com" },
+    { n: "arrel - responsible apparel", t: "b_et59cesyc2", g: "€61k", country: "Germany", markets: "EU", w: "arrel.de" },
+    { n: "MuseARTa GmbH", t: "b_cdsw5faceh", g: "€45k", country: "Germany", markets: "EU", w: "musearta.com" },
+    { n: "Custi Mikelo: Made in Spain", t: "b_xtapjke6cp", g: "€310k", country: "Spain", markets: "Both", w: "custimikelo.es" },
+    { n: "Fantastico Fans", t: "b_u6txahs29x", g: "€50k", country: "Spain", markets: "Both", w: "fantasticofans.com" },
+    { n: "A FAN OF", t: "b_6mqd4mgjd0", g: "€39k", country: "Spain", markets: "Both", w: "afanof.eu" },
+    { n: "BILLYBELT", t: "b_bj4z508wqx", g: "€514k", country: "France", markets: "Both", w: "billybelt.com" },
+    { n: "Grafitee", t: "b_hydv59mmn9", g: "€161k", country: "France", markets: "Both", w: "grafitee.fr" },
+    { n: "Juste un t-shirt", t: "b_8w54j9r7mq", g: "€124k", country: "France", markets: "Both", w: "justeuntshirt.com" },
+    { n: "Yves Enzo", t: "b_zv7wdkm2a8", g: "€79k", country: "France", markets: "Both", w: "yvesenzo.fr" },
+    { n: "Painful Clothing", t: "b_sj84enr7c8", g: "€41k", country: "France", markets: "Both", w: "painfulclothing.com" },
+    { n: "Zayne Paris", t: "b_ma5bjjz294", g: "€30k", country: "France", markets: "Both", w: "zayneparis.com" },
+  ],
+  "Kids & Baby - Non-Apparel": [
+    { n: "Annie & Charles", t: "b_6h59vcndxn", g: "€209k", country: "Austria", markets: "Both", w: "annieandcharles.com" },
+    { n: "Glückskind", t: "b_86ywaeryew", g: "€36k", country: "Austria", markets: "EU", w: "glueckskind-shop.at" },
+    { n: "WILD & SOFT", t: "b_9g9x14ijyd", g: "€76k", country: "Belgium", markets: "Both", w: "wildandsoft.com" },
+    { n: "Teddy Hermann", t: "b_363xwtxps4", g: "€344k", country: "Germany", markets: "Both", w: "teddy-hermann.de" },
+    { n: "Duckshop", t: "b_rcknwzqvba", g: "€281k", country: "Germany", markets: "Both", w: "duckshop.de" },
+    { n: "Liliput", t: "b_ra7qmu9m2n", g: "€263k", country: "Germany", markets: "Both", w: "liliput-shop.de" },
+    { n: "Uni Toys", t: "b_jgdn94u58f", g: "€239k", country: "Germany", markets: "Both", w: "uni-toys.de" },
+    { n: "Senger-Naturwelt", t: "b_8t0znzedbz", g: "€216k", country: "Germany", markets: "Both", w: "senger-naturwelt.de" },
+    { n: "the cotton cloud", t: "b_3z0vpcmgf8", g: "€184k", country: "Germany", markets: "Both", w: "thecottoncloud.com" },
+    { n: "small foot", t: "b_hycmtnbext", g: "€177k", country: "Germany", markets: "EU", w: "legler-online.com" },
+    { n: "Fehn", t: "b_v5mm82rvhu", g: "€106k", country: "Germany", markets: "EU", w: "fehn.de" },
+    { n: "Pat & Patty", t: "b_1wngx4xkzh", g: "€54k", country: "Germany", markets: "Both", w: "patundpatty.de" },
+  ],
+};
+
+const COMP_US = {
+  "Beauty & Wellness": [
+    { n: "KITSCH", t: "b_dljmfs9o", g: "€16.3M", country: "United States", markets: "Both", w: "mykitsch.com" },
+    { n: "Glowiss", t: "b_78a5y9jxe7", g: "€1.6M", country: "United States", markets: "Both", w: "glowiss.com" },
+  ],
+  "Home Decor": [
+    { n: "Kit-Cat Klock", t: "b_fb40d54d", g: "€1.1M", country: "United States", markets: "Both", w: "kit-cat.com" },
+    { n: "Lilyrosy", t: "b_regmntpasn", g: "€503k", country: "United States", markets: "Both", w: "lilyrosy.com" },
+  ],
+  "Paper & Novelty": [
+    { n: "Three Potato Four", t: "b_ajtucnxx1w", g: "€2.7M", country: "United States", markets: "Both", w: "threepotatofour.com" },
+    { n: "emily lex studio", t: "b_mmdanrh9jf", g: "€13.7M", country: "United States", markets: "Both", w: "emilylex.com" },
+  ],
+  "Food & Drink": [
+    { n: "Long Island Candy Factory", t: "b_et6a66kd2z", g: "€3.0M", country: "United States", markets: "Both", w: "longislandcandyfactory.com" },
+    { n: "Grandpa Joe's Candy Shop", t: "b_ayvwhzhr3m", g: "€10.6M", country: "United States", markets: "Both", w: "grandpajoes.com" },
+  ],
+  "Women": [
+    { n: "Le Bon Shoppe", t: "b_85a3118wke", g: "€6.1M", country: "United States", markets: "Both", w: "lebonshoppe.com" },
+    { n: "Ladivine by Cinderella Divine", t: "b_1udwajl633", g: "€1.1M", country: "United States", markets: "Both", w: "cinderelladivine.net" },
+  ],
+  "Men": [
+    { n: "Gumball Poodle", t: "b_1fc44661", g: "€2.5M", country: "United States", markets: "Both", w: "gumballpoodle.com" },
+    { n: "Sullen Clothing", t: "b_9cenxzvmpp", g: "€736k", country: "United States", markets: "Both", w: "sullenclothing.com" },
+  ],
+  "Jewelry": [
+    { n: "Mio Queena", t: "b_nex9pcmkzj", g: "€2.9M", country: "United States", markets: "Both", w: "mioqueena.com" },
+    { n: "Flânerie by MAIQ", t: "b_3tzh9mjdm6", g: "€2.3M", country: "United States", markets: "Both", w: "flaneriewholesale.com" },
+  ],
+  "Kids & Baby": [
+    { n: "Tangle, Inc.", t: "b_8q7xu4pqke", g: "€187k", country: "United States", markets: "Both", w: "tanglecreations.com" },
+    { n: "Sarah's Silks", t: "b_b75xwfx28s", g: "€317k", country: "United States", markets: "Both", w: "sarahssilks.com" },
+  ],
+  "Women's Apparel": [
+    { n: "Le Bon Shoppe", t: "b_85a3118wke", g: "€6.1M", country: "United States", markets: "Both", w: "lebonshoppe.com" },
+    { n: "Ladivine by Cinderella Divine", t: "b_1udwajl633", g: "€1.1M", country: "United States", markets: "Both", w: "cinderelladivine.net" },
+  ],
+  "Women's Accessories": [
+    { n: "Le Bon Shoppe", t: "b_85a3118wke", g: "€6.1M", country: "United States", markets: "Both", w: "lebonshoppe.com" },
+    { n: "Ladivine by Cinderella Divine", t: "b_1udwajl633", g: "€1.1M", country: "United States", markets: "Both", w: "cinderelladivine.net" },
+  ],
+  "Men's Apparel": [
+    { n: "Gumball Poodle", t: "b_1fc44661", g: "€2.5M", country: "United States", markets: "Both", w: "gumballpoodle.com" },
+    { n: "Sullen Clothing", t: "b_9cenxzvmpp", g: "€736k", country: "United States", markets: "Both", w: "sullenclothing.com" },
+  ],
+  "Kids & Baby - Non-Apparel": [
+    { n: "Tangle, Inc.", t: "b_8q7xu4pqke", g: "€187k", country: "United States", markets: "Both", w: "tanglecreations.com" },
+    { n: "Sarah's Silks", t: "b_b75xwfx28s", g: "€317k", country: "United States", markets: "Both", w: "sarahssilks.com" },
+  ],
 };
 
 // ─── 111 ACCOUNTS (Salesforce + Excel booth) ──────────────────────────────────
@@ -2976,7 +3868,34 @@ function AccountCard({
     ae: [],
     brand: []
   };
-  const comps = (COMPETITORS[a.cat] || []).filter(c => c.t !== a.token).slice(0, 4);
+  // ─── Three-pool competitor merge (≥50% same-country, EU fill, max 2 US) ────────
+  const _SAME = (COMP_COUNTRY[a.cat] && COMP_COUNTRY[a.cat][a.country]) || [];
+  const _EU = COMP_EU[a.cat] || [];
+  const _US = COMP_US[a.cat] || [];
+  const _TARGET = 7;
+  const _seen = new Set([a.token]);
+  const _picked = [];
+  // Pool 1: same country first
+  for (const c of _SAME) {
+    if (_picked.length >= _TARGET) break;
+    if (!_seen.has(c.t)) { _picked.push(c); _seen.add(c.t); }
+  }
+  // Pool 2: fill from other EU brands (different country, same category)
+  for (const c of _EU) {
+    if (_picked.length >= _TARGET) break;
+    if (_seen.has(c.t)) continue;
+    if (c.country === a.country) continue;
+    _picked.push(c); _seen.add(c.t);
+  }
+  // Pool 3: max 2 US brands with EU appeal
+  let _usAdded = 0;
+  for (const c of _US) {
+    if (_picked.length >= 8) break;
+    if (_usAdded >= 2) break;
+    if (_seen.has(c.t)) continue;
+    _picked.push(c); _seen.add(c.t); _usAdded++;
+  }
+  const comps = _picked.slice(0, 8);
   const pb = a.lost ? PLAYBOOK[a.lost] || PLAYBOOK["Other"] : null;
   const lc = lastContactInfo(s.lc);
   const sfdcURL = "https://indigofairorg.lightning.force.com/lightning/r/Account/" + a.id + "/view";
@@ -3523,36 +4442,60 @@ function AccountCard({
     style: {
       marginBottom: 14
     }
-  }, sectionLabel("🏪 Similar Brands on Faire (" + a.cat + ")"), /*#__PURE__*/React.createElement("div", {
+  }, sectionLabel("🏪 Similar Brands on Faire · " + a.cat + " (" + a.country + " first)"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       flexWrap: "wrap",
       gap: 6
     }
-  }, comps.map(c => /*#__PURE__*/React.createElement("a", {
+  }, comps.map(c => /*#__PURE__*/React.createElement("div", {
     key: c.n,
-    href: "https://faire.com/brand/" + c.t,
-    target: "_blank",
-    rel: "noreferrer",
     style: {
       fontFamily: F,
       fontSize: 12,
-      color: C.green,
-      textDecoration: "none",
-      padding: "4px 11px",
+      padding: "4px 10px",
       border: "1px solid " + C.border,
       borderRadius: 6,
       background: C.greenLt,
-      display: "flex",
+      display: "inline-flex",
       gap: 6,
       alignItems: "center"
     }
-  }, c.n, " ", /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://faire.com/brand/" + c.t,
+    target: "_blank",
+    rel: "noreferrer",
+    title: "View " + c.n + " on Faire",
+    style: { color: C.green, textDecoration: "none", fontWeight: 500 }
+  }, c.n), c.w && /*#__PURE__*/React.createElement("a", {
+    href: "https://" + c.w,
+    target: "_blank",
+    rel: "noreferrer",
+    title: c.w,
+    style: { color: C.text3, textDecoration: "none", fontSize: 11 }
+  }, "↗"), c.g && /*#__PURE__*/React.createElement("span", {
+    style: { color: C.text3, fontSize: 11 }
+  }, "· " + c.g), (c.markets === "EU" || c.markets === "Both") && /*#__PURE__*/React.createElement("span", {
     style: {
-      color: C.text3,
-      fontSize: 11
+      fontSize: 9,
+      fontWeight: 700,
+      padding: "1px 5px",
+      borderRadius: 3,
+      background: "#dbeafe",
+      color: "#1e40af",
+      letterSpacing: "0.04em"
     }
-  }, c.g))))), pb && /*#__PURE__*/React.createElement("div", {
+  }, "EU"), (c.markets === "US" || c.markets === "Both") && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 9,
+      fontWeight: 700,
+      padding: "1px 5px",
+      borderRadius: 3,
+      background: "#fef3c7",
+      color: "#92400e",
+      letterSpacing: "0.04em"
+    }
+  }, "US"))))), pb && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: 14,
       borderRadius: 8,
