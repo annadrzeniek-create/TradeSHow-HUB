@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background: rounded square in Faire green -->
+  <rect width="512" height="512" rx="96" ry="96" fill="#1A7A5E"/>
+
+  <!-- Subtle gradient overlay for depth -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" ry="96" fill="url(#g)"/>
+
+  <!-- "F" monogram in cream/white -->
+  <g fill="#F4F0E5">
+    <!-- Vertical bar -->
+    <rect x="148" y="120" width="58" height="280" rx="6"/>
+    <!-- Top horizontal -->
+    <rect x="148" y="120" width="216" height="58" rx="6"/>
+    <!-- Middle horizontal -->
+    <rect x="148" y="232" width="160" height="52" rx="6"/>
+  </g>
+
+  <!-- Small "BP" label below -->
+  <text x="256" y="468" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        font-size="44" font-weight="700" fill="#F4F0E5" letter-spacing="6">BP</text>
+</svg>
